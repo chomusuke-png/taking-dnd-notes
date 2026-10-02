@@ -4,6 +4,7 @@ import { Toasts } from './components/Toasts';
 import { HomePage } from './features/campaigns/HomePage';
 import { CharacterSheet } from './features/characters/CharacterSheet';
 import { CharactersPage } from './features/characters/CharactersPage';
+import { PartyPage } from './features/party/PartyPage';
 import { CampaignLayout } from './features/workspace/CampaignLayout';
 import { SectionPlaceholder } from './features/workspace/SectionPlaceholder';
 import { SettingsPage } from './features/workspace/SettingsPage';
@@ -21,6 +22,8 @@ const router = createHashRouter([
       { path: 'personajes/:characterId', element: <CharacterSheet /> },
       // El editor (TipTap) es la dependencia más pesada: se descarga solo al abrir notas.
       { path: 'diario/:noteId?', lazy: async () => ({ Component: (await import('./features/notes/NotesPage')).JournalPage }) },
+      { path: 'grupo', element: <PartyPage /> },
+      { path: 'encuentros/:encounterId?', lazy: async () => ({ Component: (await import('./features/encounters/EncountersPage')).EncountersPage }) },
       { path: 'compendio/:kind?/:id?', lazy: async () => ({ Component: (await import('./features/compendium/CompendiumPage')).CompendiumPage }) },
       { path: 'wiki/:noteId?', lazy: async () => ({ Component: (await import('./features/notes/NotesPage')).WikiPage }) },
       ...SECTIONS.filter((s) => s.phase).map((s) => ({

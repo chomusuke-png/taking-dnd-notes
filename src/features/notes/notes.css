@@ -8,73 +8,6 @@
   padding-bottom: 72px;
 }
 
-/* ---------- Lista ---------- */
-
-.notes-list-pane {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: calc(100vh - 110px);
-  padding: 14px;
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-.notes-list-pane > :not(.notes-list) { flex-shrink: 0; }
-.notes-list-head { display: flex; justify-content: space-between; align-items: center; }
-.notes-list-head h2 { margin: 0; font-size: 1.25rem; }
-
-.type-chips .chip,
-.tag-chips .chip { font-size: 0.75rem; padding: 2px 8px; }
-
-.notes-list { list-style: none; margin: 0 -6px; padding: 0; overflow-y: auto; flex: 1; }
-.notes-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 8px;
-  border-radius: var(--radius);
-  text-decoration: none;
-  border-left: 3px solid transparent;
-}
-.notes-item:hover { background: var(--bg-hover); }
-.notes-item.is-active { background: var(--bg-hover); border-left-color: var(--accent); }
-.notes-item-num { font-family: var(--font-display); font-weight: 700; color: var(--gold); min-width: 2.4ch; }
-.notes-item-icon { width: 1.4em; text-align: center; }
-.notes-item-body { display: flex; flex-direction: column; min-width: 0; }
-.notes-item-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.notes-empty { padding: 8px; }
-
-.menu-anchor { position: relative; }
-.menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 4px);
-  z-index: 20;
-  min-width: 170px;
-  padding: 4px;
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-.menu-item {
-  display: block;
-  width: 100%;
-  padding: 7px 10px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-}
-.menu-item:hover { background: var(--bg-hover); }
-
 /* ---------- Nota ---------- */
 
 .note-header {
@@ -87,20 +20,6 @@
 .note-back { grid-column: 1 / -1; font-size: 0.82rem; text-decoration: none; display: none; }
 .note-title-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .note-type-icon { font-size: 1.6rem; }
-.note-title-input {
-  flex: 1;
-  min-width: 0;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 600;
-  padding: 2px 6px;
-}
-.note-title-input:hover { border-color: var(--border); }
-.note-title-input:focus { border-color: var(--focus); outline: none; background: var(--bg); }
 .note-header-actions { display: flex; align-items: center; gap: 10px; }
 
 .note-layout {

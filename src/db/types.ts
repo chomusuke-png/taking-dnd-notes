@@ -177,24 +177,36 @@ export interface Note {
   updatedAt: number;
 }
 
+export type CombatantRef = { type: 'character'; id: Id } | { type: 'srdMonster'; id: string } | { type: 'custom' };
+
+/**
+ * Participante de un encuentro. Para personajes (`ref.type === 'character'`) los PG, la CA
+ * y las condiciones viven en la hoja: aquí solo se guarda la iniciativa.
+ */
 export interface Combatant {
   id: Id;
-  ref: { type: 'character'; id: Id } | { type: 'srdMonster'; id: string } | { type: 'custom' };
+  ref: CombatantRef;
   name: string;
-  initiative: number;
+  /** null = aún sin tirar. */
+  initiative: number | null;
+  initBonus: number;
   hp: number;
   maxHp: number;
+  tempHp: number;
   ac: number;
   conditions: Condition[];
-  hidden: boolean;
+  notes: string;
 }
 
 export interface Encounter {
   id: Id;
   campaignId: Id;
   name: string;
+  /** 0 = en preparación; desde 1, ronda de combate en curso. */
   round: number;
-  turnIndex: number;
+  /** Combatiente con el turno actual. */
+  activeId?: Id;
+  ended: boolean;
   combatants: Combatant[];
   createdAt: number;
   updatedAt: number;
