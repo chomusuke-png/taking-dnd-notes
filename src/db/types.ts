@@ -13,8 +13,8 @@ export const SKILLS = [
 ] as const;
 export type Skill = (typeof SKILLS)[number];
 
-/** 0 = nada, 0.5 = Jack of all trades, 1 = competente, 2 = pericia */
-export type ProficiencyLevel = 0 | 0.5 | 1 | 2;
+/** 0 = nada, 1 = competente, 2 = pericia. Jack of all trades es un flag del personaje. */
+export type ProficiencyLevel = 0 | 1 | 2;
 
 export const CONDITIONS = [
   'blinded', 'charmed', 'deafened', 'frightened', 'grappled', 'incapacitated',
@@ -25,6 +25,27 @@ export type Condition = (typeof CONDITIONS)[number];
 
 export type HitDie = 6 | 8 | 10 | 12;
 export type Recharge = 'short' | 'long' | 'dawn';
+
+/**
+ * Cómo se calcula la CA. 'none' usa 10 + DES o la Defensa sin armadura indicada;
+ * 'natural' es base + DES (p. ej. hombre lagarto 13 + DES).
+ */
+export interface ArmorConfig {
+  kind: 'none' | 'light' | 'medium' | 'heavy' | 'natural';
+  base: number;
+  shield: boolean;
+  unarmoredDefense: 'none' | 'barbarian' | 'monk';
+  /** Bonificadores mágicos o de rasgos (+1 armadura, Defensa del estilo de combate...). */
+  bonus: number;
+}
+
+/** Bonificadores varios de objetos o rasgos (Anillo de protección, Alerta...). */
+export interface MiscBonuses {
+  initiative: number;
+  saves: number;
+  spellDc: number;
+  spellAttack: number;
+}
 
 /** Referencia a una entrada del SRD o a una entrada homebrew de la campaña. */
 export interface EntryRef {
@@ -102,6 +123,7 @@ export interface Character {
   proficiencies: {
     saves: Ability[];
     skills: Partial<Record<Skill, ProficiencyLevel>>;
+    jackOfAllTrades: boolean;
     armor: string[];
     weapons: string[];
     tools: string[];
@@ -114,9 +136,12 @@ export interface Character {
   exhaustion: number;
   inspiration: boolean;
   speed: number;
+  armor: ArmorConfig;
   acOverride?: number;
-  spellcasting?: {
+  bonuses: MiscBonuses;
+  spellcasting: {
     entries: SpellcastingEntry[];
+    /** Espacios gastados por nivel de conjuro (índice 0 = nivel 1). */
     slotsUsed: number[];
     pactSlotsUsed: number;
   };

@@ -131,7 +131,7 @@ Estilo visual: se mantiene el tema oscuro del prototipo (rojo para PG, dorado pa
 | **F1** | Motor de reglas + tests; hoja de personaje con creación manual | Llevar un PJ completo a la mesa |
 | **F2** | Diario + wiki con TipTap, `[[enlaces]]`, backlinks y búsqueda | Tomar notas de sesión |
 | **F3** | Compendio SRD; agregar conjuros y objetos a la hoja | Menos escritura manual |
-| **F4** | Estado de combate completo (daño, descansos, espacios) + tracker de encuentros + vista de grupo | Herramientas del DM |
+| **F4** | Tracker de encuentros + vista de grupo (el estado de combate de la hoja se adelantó a F1) | Herramientas del DM |
 | **F5** | PWA offline, ajustes para móvil, respaldo automático (recordatorio de exportar) | Uso diario en el celular |
 | Futuro | Asistente de creación por raza y clase, subir de nivel, traducción del SRD, sync opcional | |
 
@@ -144,3 +144,6 @@ Estilo visual: se mantiene el tema oscuro del prototipo (rojo para PG, dorado pa
 ## 9. Estado
 
 - **F0 ✅**: proyecto Vite + React + TS, esquema Dexie v1 con todas las tablas del modelo, CRUD de campañas con borrado en cascada, export/import JSON de campañas y personajes (ids regenerados al importar), layout de campaña con navegación lateral (inferior en móvil), tema oscuro/claro/sistema, tests de la capa de datos.
+- **F1 ✅**: motor de reglas en `src/rules/` con tests (modificadores, competencia, Jack of all trades, CA con armaduras y Defensa sin armadura, CD/ataque de conjuros por clase, espacios de conjuro de una clase y multiclase, Magia de pacto, PG promedio, carga, daño con PG temporales y muerte instantánea, salvaciones de muerte, descansos corto y largo, dados). Hoja de personaje con modo juego/edición, tiradas integradas con ventaja/desventaja e historial, inventario, rasgos con usos, ataques, condiciones y agotamiento, monedero. Lista de PJ/PNJ con import/export de personajes. Esquema Dexie v2 con migración (`normalizeCharacter`).
+  - Se adelantó desde F4 el estado de combate de la hoja (daño/curación, salvaciones de muerte, descansos, espacios de conjuro).
+  - Pendiente para F3: lista de conjuros conocidos/preparados (necesita el compendio SRD).

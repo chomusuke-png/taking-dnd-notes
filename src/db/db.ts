@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
+import { normalizeCharacter } from './normalize';
 import type { Campaign, Character, CustomEntry, Encounter, Note } from './types';
 
 export class AppDB extends Dexie {
@@ -18,6 +19,12 @@ export class AppDB extends Dexie {
       encounters: 'id, campaignId',
       customEntries: 'id, campaignId, kind',
     });
+    // v2 (F1): armadura, bonificadores, Jack of all trades y spellcasting obligatorio.
+    this.version(2).upgrade((tx) =>
+      tx.table<Character>('characters').toCollection().modify((c, ref) => {
+        ref.value = normalizeCharacter(c);
+      }),
+    );
   }
 }
 

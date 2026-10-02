@@ -98,17 +98,6 @@
   border-top: 1px solid var(--border);
 }
 
-.empty-state {
-  text-align: center;
-  padding: 56px 16px;
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-}
-.empty-icon {
-  font-size: 2.5rem;
-  margin: 0;
-}
-
 .home-footnote {
   margin-top: 32px;
   font-size: 0.82rem;

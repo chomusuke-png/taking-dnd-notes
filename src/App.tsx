@@ -2,6 +2,8 @@ import { Navigate, RouterProvider, createHashRouter } from 'react-router-dom';
 import { useApplyTheme } from './components/Theme';
 import { Toasts } from './components/Toasts';
 import { HomePage } from './features/campaigns/HomePage';
+import { CharacterSheet } from './features/characters/CharacterSheet';
+import { CharactersPage } from './features/characters/CharactersPage';
 import { CampaignLayout } from './features/workspace/CampaignLayout';
 import { SectionPlaceholder } from './features/workspace/SectionPlaceholder';
 import { SettingsPage } from './features/workspace/SettingsPage';
@@ -15,7 +17,12 @@ const router = createHashRouter([
     element: <CampaignLayout />,
     children: [
       { index: true, element: <Navigate to="personajes" replace /> },
-      ...SECTIONS.map((s) => ({ path: s.path, element: <SectionPlaceholder section={s} /> })),
+      { path: 'personajes', element: <CharactersPage /> },
+      { path: 'personajes/:characterId', element: <CharacterSheet /> },
+      ...SECTIONS.filter((s) => s.path !== 'personajes').map((s) => ({
+        path: s.path,
+        element: <SectionPlaceholder section={s} />,
+      })),
       { path: 'ajustes', element: <SettingsPage /> },
     ],
   },

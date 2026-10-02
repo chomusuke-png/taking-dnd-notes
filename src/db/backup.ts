@@ -1,5 +1,6 @@
 import { UUID_RE, newId } from '../lib/id';
 import { db as defaultDb, type AppDB } from './db';
+import { normalizeCharacter } from './normalize';
 import type { Campaign, CampaignSettings, Character, CustomEntry, Encounter, Id, Note } from './types';
 
 export const BACKUP_VERSION = 1;
@@ -136,7 +137,7 @@ export async function importCampaign(bundle: CampaignBundle, database: AppDB = d
     [database.campaigns, database.characters, database.notes, database.encounters, database.customEntries],
     async () => {
       await database.campaigns.add(campaign);
-      await database.characters.bulkAdd(b.characters);
+      await database.characters.bulkAdd(b.characters.map(normalizeCharacter));
       await database.notes.bulkAdd(b.notes);
       await database.encounters.bulkAdd(b.encounters);
       await database.customEntries.bulkAdd(b.customEntries);
@@ -153,7 +154,7 @@ export async function importCharacter(
 ): Promise<Character> {
   // La ficha wiki asociada no viaja con el personaje.
   const { noteId: _noteId, ...rest } = remapIds(bundle.character);
-  const character: Character = { ...rest, campaignId, updatedAt: Date.now() };
+  const character = normalizeCharacter({ ...rest, campaignId, updatedAt: Date.now() });
   await database.characters.add(character);
   return character;
 }

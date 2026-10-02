@@ -1,0 +1,93 @@
+.dice-tray {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.dice-fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.dice-fab:hover { background: var(--accent-hover); }
+.dice-fab-mode { width: auto; padding: 0 14px; border-radius: 26px; font-size: 1.1rem; font-weight: 700; }
+
+.dice-panel,
+.dice-flash {
+  width: min(340px, calc(100vw - 32px));
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.dice-panel {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: min(520px, 70vh);
+}
+.dice-panel-head { display: flex; justify-content: space-between; align-items: center; }
+
+.dice-flash {
+  padding: 4px 12px;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  list-style: none;
+  animation: dice-in 0.18s ease-out;
+}
+@keyframes dice-in {
+  from { transform: translateY(8px); opacity: 0; }
+}
+
+.dice-input { display: flex; gap: 6px; }
+
+.dice-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+.dice-empty { font-size: 0.85rem; padding: 6px 0; }
+
+.roll {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.dice-flash .roll { border-bottom: 0; }
+.roll-text { display: flex; flex-direction: column; min-width: 0; }
+.roll-label { font-size: 0.9rem; }
+.roll-detail { font-size: 0.78rem; }
+.roll-total {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 2.2ch;
+  text-align: right;
+}
+.roll-success { color: var(--gold); }
+.roll-fail { color: var(--danger); }
+
+@media (max-width: 760px) {
+  /* Sobre la barra de navegación inferior. */
+  .dice-tray { right: 16px; bottom: 76px; }
+}

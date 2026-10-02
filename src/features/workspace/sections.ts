@@ -9,7 +9,7 @@ export interface Section {
 
 export const SECTIONS: Section[] = [
   { path: 'grupo', label: 'Grupo', icon: '🛡️', phase: 'F4', summary: 'Pantalla del DM: PG, CA, pasivas y condiciones de todos los PJ de un vistazo.' },
-  { path: 'personajes', label: 'Personajes', icon: '🧙', phase: 'F1', summary: 'Hojas de PJ y PNJ con cálculos automáticos de 5e 2014.' },
+  { path: 'personajes', label: 'Personajes', icon: '🧙', phase: '', summary: 'Hojas de PJ y PNJ con cálculos automáticos de 5e 2014.' },
   { path: 'diario', label: 'Diario', icon: '📖', phase: 'F2', summary: 'Notas de cada sesión con [[enlaces]] a la wiki.' },
   { path: 'wiki', label: 'Wiki', icon: '🗺️', phase: 'F2', summary: 'PNJ, lugares, misiones, facciones y objetos, enlazados entre sí con backlinks.' },
   { path: 'encuentros', label: 'Encuentros', icon: '⚔️', phase: 'F4', summary: 'Tracker de iniciativa con monstruos del SRD, PG y condiciones.' },

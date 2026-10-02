@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
 import { ThemeToggle } from '../../components/Theme';
 import { db } from '../../db/db';
 import type { Campaign } from '../../db/types';
+import { DiceTray } from '../dice/DiceTray';
 import { SECTIONS } from './sections';
 import './workspace.css';
 
@@ -72,6 +73,7 @@ export function CampaignLayout() {
           <Outlet context={{ campaign } satisfies WorkspaceContext} />
         </main>
       </div>
+      <DiceTray />
     </div>
   );
 }
