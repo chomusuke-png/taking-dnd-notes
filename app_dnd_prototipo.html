@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Rol Tracker</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-panel: #1e1e1e;
+            --border-color: #333;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --accent-red: #d32f2f;
+            --accent-gold: #ffb300;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden; /* Evita scroll en la página completa */
+        }
+
+        /* Paneles generales */
+        .panel {
+            padding: 20px;
+            overflow-y: auto; /* Scroll individual por columna */
+        }
+
+        /* --- COLUMNA IZQUIERDA: Atributos y Habilidades --- */
+        .panel-left {
+            width: 25%;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            padding: 15px 5px;
+        }
+
+        .stat-box h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stat-box .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .stat-box .modifier {
+            font-size: 0.8rem;
+        }
+
+        /* --- COLUMNA CENTRAL: Diario y Notas --- */
+        .panel-center {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-dark);
+        }
+
+        .editor-header {
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* El área editable imitando un editor de texto enriquecido */
+        .editor-content {
+            flex-grow: 1;
+            outline: none;
+            line-height: 1.6;
+            padding-right: 15px; /* Espacio para el scrollbar */
+        }
+
+        .editor-content h1, .editor-content h2 {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        /* --- COLUMNA DERECHA: Estado Dinámico --- */
+        .panel-right {
+            width: 25%;
+            background-color: var(--bg-panel);
+            border-left: 1px solid var(--border-color);
+        }
+
+        .hp-box {
+            background-color: var(--bg-dark);
+            border: 2px solid var(--accent-red);
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hp-box .hp-numbers {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        .inventory-section {
+            margin-bottom: 20px;
+        }
+
+        .inventory-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .money-box {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg-dark);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-gold);
+        }
+
+        /* Personalización del Scrollbar para que se vea limpio */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #777; }
+    </style>
+</head>
+<body>
+
+    <div class="panel panel-left">
+        <h2>Atributos</h2>
+        <div class="stat-grid">
+            <div class="stat-box"><h3>FUE</h3><div class="value">16</div><div class="modifier">+3</div></div>
+            <div class="stat-box"><h3>DES</h3><div class="value">14</div><div class="modifier">+2</div></div>
+            <div class="stat-box"><h3>CON</h3><div class="value">15</div><div class="modifier">+2</div></div>
+            <div class="stat-box"><h3>INT</h3><div class="value">8</div><div class="modifier">-1</div></div>
+            <div class="stat-box"><h3>SAB</h3><div class="value">10</div><div class="modifier">+0</div></div>
+            <div class="stat-box"><h3>CAR</h3><div class="value">12</div><div class="modifier">+1</div></div>
+        </div>
+
+        <h2>Habilidades</h2>
+        <div class="inventory-item"><span>⚔️ Atletismo (FUE)</span> <span>+5</span></div>
+        <div class="inventory-item"><span>🏃‍♂️ Acrobacias (DES)</span> <span>+2</span></div>
+        <div class="inventory-item"><span>👁️ Percepción (SAB)</span> <span>+2</span></div>
+        <div class="inventory-item"><span>🗣️ Intimidación (CAR)</span> <span>+3</span></div>
+    </div>
+
+    <div class="panel panel-center">
+        <div class="editor-header">
+            <h2>Diario de Campaña</h2>
+            <span style="color: var(--text-muted); font-size: 0.8rem;">🔍 Buscar en apuntes...</span>
+        </div>
+        
+        <div class="editor-content" contenteditable="true">
+            <h1>Sesión 12: La cueva del Eco</h1>
+            <p>Llegamos a la cueva buscando al herrero desaparecido. La entrada huele a azufre y goblins.</p>
+            <ul>
+                <li>Encontramos huellas pequeñas.</li>
+                <li>El pícaro desarmó una trampa de alambre.</li>
+            </ul>
+            <h2>Combate en la sala principal</h2>
+            <p>Nos emboscaron 4 goblins desde el techo. <strong>Gasté mi poción de curación aquí.</strong></p>
+            <br>
+            <h1>Sesión 13: El pacto</h1>
+            <p>Comienza a escribir tu próxima sesión aquí...</p>
+        </div>
+    </div>
+
+    <div class="panel panel-right">
+        <h2>Estado</h2>
+        <div class="hp-box">
+            <div>Puntos de Salud</div>
+            <div class="hp-numbers">32 / 45</div>
+        </div>
+
+        <h2>Armas Equipadas</h2>
+        <div class="inventory-section">
+            <div class="inventory-item"><span>Espada Larga</span> <span>1d8 + 3 cortante</span></div>
+            <div class="inventory-item"><span>Arco Corto</span> <span>1d6 + 2 perforante</span></div>
+        </div>
+
+        <h2>Conjuros Preparados</h2>
+        <div class="inventory-section">
+            <div class="inventory-item"><span>🔥 Bola de Fuego (Nvl 3)</span> <span>1 / 1</span></div>
+            <div class="inventory-item"><span>✨ Escudo (Nvl 1)</span> <span>3 / 4</span></div>
+        </div>
+
+        <h2>Monedero</h2>
+        <div class="money-box">
+            <span style="color: #cd7f32;">15 PC</span>
+            <span style="color: #c0c0c0;">40 PP</span>
+            <span style="color: var(--accent-gold);">120 PO</span>
+        </div>
+    </div>
+
+</body>
+</html>
