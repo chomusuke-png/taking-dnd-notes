@@ -22,5 +22,5 @@ export function slugify(text: string): string {
 
 export function backupFilename(name: string, kind: 'campaña' | 'personaje'): string {
   const date = new Date().toISOString().slice(0, 10);
-  return `grimorio-${kind === 'campaña' ? 'campana' : 'personaje'}-${slugify(name)}-${date}.json`;
+  return `taking-dnd-notes-${kind === 'campaña' ? 'campana' : 'personaje'}-${slugify(name)}-${date}.json`;
 }

@@ -24,7 +24,7 @@ export function HomePage() {
       <header className="home-header">
         <div className="brand">
           <img src="/favicon.svg" alt="" width={32} height={32} />
-          <h1>Grimorio</h1>
+          <h1>Taking D&D Notes</h1>
         </div>
         <ThemeToggle />
       </header>

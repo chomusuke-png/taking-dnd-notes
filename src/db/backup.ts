@@ -1,11 +1,11 @@
 import { UUID_RE, newId } from '../lib/id';
-import { db as defaultDb, type GrimorioDB } from './db';
+import { db as defaultDb, type AppDB } from './db';
 import type { Campaign, CampaignSettings, Character, CustomEntry, Encounter, Id, Note } from './types';
 
 export const BACKUP_VERSION = 1;
 
 export interface CampaignBundle {
-  format: 'grimorio-campaign';
+  format: 'taking-dnd-notes-campaign';
   version: number;
   exportedAt: string;
   campaign: Campaign;
@@ -16,7 +16,7 @@ export interface CampaignBundle {
 }
 
 export interface CharacterBundle {
-  format: 'grimorio-character';
+  format: 'taking-dnd-notes-character';
   version: number;
   exportedAt: string;
   character: Character;
@@ -24,7 +24,7 @@ export interface CharacterBundle {
 
 export class ImportError extends Error {}
 
-export async function exportCampaign(id: Id, database: GrimorioDB = defaultDb): Promise<CampaignBundle> {
+export async function exportCampaign(id: Id, database: AppDB = defaultDb): Promise<CampaignBundle> {
   const campaign = await database.campaigns.get(id);
   if (!campaign) throw new Error('Campaña no encontrada.');
   const [characters, notes, encounters, customEntries] = await Promise.all([
@@ -34,7 +34,7 @@ export async function exportCampaign(id: Id, database: GrimorioDB = defaultDb): 
     database.customEntries.where('campaignId').equals(id).toArray(),
   ]);
   return {
-    format: 'grimorio-campaign',
+    format: 'taking-dnd-notes-campaign',
     version: BACKUP_VERSION,
     exportedAt: new Date().toISOString(),
     campaign,
@@ -45,10 +45,10 @@ export async function exportCampaign(id: Id, database: GrimorioDB = defaultDb): 
   };
 }
 
-export async function exportCharacter(id: Id, database: GrimorioDB = defaultDb): Promise<CharacterBundle> {
+export async function exportCharacter(id: Id, database: AppDB = defaultDb): Promise<CharacterBundle> {
   const character = await database.characters.get(id);
   if (!character) throw new Error('Personaje no encontrado.');
-  return { format: 'grimorio-character', version: BACKUP_VERSION, exportedAt: new Date().toISOString(), character };
+  return { format: 'taking-dnd-notes-character', version: BACKUP_VERSION, exportedAt: new Date().toISOString(), character };
 }
 
 /**
@@ -78,7 +78,7 @@ function checkEntities(value: unknown, label: string): void {
 
 function checkVersion(data: Record<string, unknown>): void {
   if (typeof data.version !== 'number' || data.version > BACKUP_VERSION) {
-    throw new ImportError('Este respaldo es de una versión más nueva de Grimorio. Actualiza la app para importarlo.');
+    throw new ImportError('Este respaldo es de una versión más nueva de Taking D&D Notes. Actualiza la app para importarlo.');
   }
 }
 
@@ -89,9 +89,9 @@ export function parseBackup(text: string): CampaignBundle | CharacterBundle {
   } catch {
     throw new ImportError('El archivo no es un JSON válido.');
   }
-  if (!isObject(data)) throw new ImportError('El archivo no es un respaldo de Grimorio.');
+  if (!isObject(data)) throw new ImportError('El archivo no es un respaldo de Taking D&D Notes.');
 
-  if (data.format === 'grimorio-campaign') {
+  if (data.format === 'taking-dnd-notes-campaign') {
     checkVersion(data);
     const c = data.campaign;
     if (!isObject(c) || typeof c.id !== 'string' || typeof c.name !== 'string') {
@@ -107,7 +107,7 @@ export function parseBackup(text: string): CampaignBundle | CharacterBundle {
     };
   }
 
-  if (data.format === 'grimorio-character') {
+  if (data.format === 'taking-dnd-notes-character') {
     checkVersion(data);
     const ch = data.character;
     if (!isObject(ch) || typeof ch.id !== 'string' || typeof ch.name !== 'string') {
@@ -116,11 +116,11 @@ export function parseBackup(text: string): CampaignBundle | CharacterBundle {
     return data as unknown as CharacterBundle;
   }
 
-  throw new ImportError('El archivo no es un respaldo de Grimorio.');
+  throw new ImportError('El archivo no es un respaldo de Taking D&D Notes.');
 }
 
 /** Importa siempre como campaña nueva (ids regenerados), así nunca pisa datos existentes. */
-export async function importCampaign(bundle: CampaignBundle, database: GrimorioDB = defaultDb): Promise<Campaign> {
+export async function importCampaign(bundle: CampaignBundle, database: AppDB = defaultDb): Promise<Campaign> {
   const b = remapIds(bundle);
   const now = Date.now();
   const nameTaken = (await database.campaigns.where('name').equals(b.campaign.name).count()) > 0;
@@ -149,7 +149,7 @@ export async function importCampaign(bundle: CampaignBundle, database: GrimorioD
 export async function importCharacter(
   bundle: CharacterBundle,
   campaignId: Id,
-  database: GrimorioDB = defaultDb,
+  database: AppDB = defaultDb,
 ): Promise<Character> {
   // La ficha wiki asociada no viaja con el personaje.
   const { noteId: _noteId, ...rest } = remapIds(bundle.character);

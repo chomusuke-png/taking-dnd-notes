@@ -1,4 +1,4 @@
-# Grimorio
+# Taking D&D Notes
 
 Manager de personajes y libro de notas para D&D 5e (2014). App web local (PWA): los datos viven en el navegador (IndexedDB) y se respaldan exportando JSON.
 

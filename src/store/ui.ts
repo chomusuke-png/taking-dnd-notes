@@ -30,6 +30,6 @@ export const useUi = create<UiState>()(
         setTimeout(() => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })), 4000);
       },
     }),
-    { name: 'grimorio-ui', partialize: (s) => ({ theme: s.theme }) },
+    { name: 'taking-dnd-notes-ui', partialize: (s) => ({ theme: s.theme }) },
   ),
 );

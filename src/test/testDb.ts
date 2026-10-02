@@ -1,11 +1,11 @@
 import { afterEach } from 'vitest';
-import { GrimorioDB } from '../db/db';
+import { AppDB } from '../db/db';
 
-const opened: GrimorioDB[] = [];
+const opened: AppDB[] = [];
 
 /** Base de datos aislada por test (fake-indexeddb). */
-export function makeTestDb(): GrimorioDB {
-  const database = new GrimorioDB(`test-${crypto.randomUUID()}`);
+export function makeTestDb(): AppDB {
+  const database = new AppDB(`test-${crypto.randomUUID()}`);
   opened.push(database);
   return database;
 }

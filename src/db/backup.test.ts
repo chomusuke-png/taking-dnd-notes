@@ -61,7 +61,7 @@ describe('export/import de campaña', () => {
   });
 
   it('acepta respaldos sin colecciones opcionales', () => {
-    const minimal = { format: 'grimorio-campaign', version: 1, campaign: { id: crypto.randomUUID(), name: 'X' } };
+    const minimal = { format: 'taking-dnd-notes-campaign', version: 1, campaign: { id: crypto.randomUUID(), name: 'X' } };
     const parsed = parseBackup(JSON.stringify(minimal)) as CampaignBundle;
     expect(parsed.characters).toEqual([]);
     expect(parsed.notes).toEqual([]);
@@ -70,9 +70,9 @@ describe('export/import de campaña', () => {
   it.each([
     ['no es JSON', '{nope'],
     ['formato desconocido', JSON.stringify({ format: 'otro' })],
-    ['versión futura', JSON.stringify({ format: 'grimorio-campaign', version: BACKUP_VERSION + 1, campaign: { id: 'a', name: 'b' } })],
-    ['sin campaña', JSON.stringify({ format: 'grimorio-campaign', version: 1 })],
-    ['colección inválida', JSON.stringify({ format: 'grimorio-campaign', version: 1, campaign: { id: 'a', name: 'b' }, notes: [1] })],
+    ['versión futura', JSON.stringify({ format: 'taking-dnd-notes-campaign', version: BACKUP_VERSION + 1, campaign: { id: 'a', name: 'b' } })],
+    ['sin campaña', JSON.stringify({ format: 'taking-dnd-notes-campaign', version: 1 })],
+    ['colección inválida', JSON.stringify({ format: 'taking-dnd-notes-campaign', version: 1, campaign: { id: 'a', name: 'b' }, notes: [1] })],
   ])('rechaza: %s', (_label, text) => {
     expect(() => parseBackup(text)).toThrow(ImportError);
   });
@@ -83,8 +83,8 @@ describe('export/import de personaje', () => {
     const { db, pc } = await seed();
     const other = await createCampaign({ name: 'Otra' }, db);
     const bundle = parseBackup(JSON.stringify(await exportCharacter(pc.id, db)));
-    expect(bundle.format).toBe('grimorio-character');
-    if (bundle.format !== 'grimorio-character') return;
+    expect(bundle.format).toBe('taking-dnd-notes-character');
+    if (bundle.format !== 'taking-dnd-notes-character') return;
 
     const copy = await importCharacter(bundle, other.id, db);
     expect(copy.id).not.toBe(pc.id);

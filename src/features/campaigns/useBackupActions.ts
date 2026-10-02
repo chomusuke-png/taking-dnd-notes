@@ -19,7 +19,7 @@ export function useBackupActions() {
   async function importFile(file: File) {
     try {
       const bundle = parseBackup(await file.text());
-      if (bundle.format === 'grimorio-character') {
+      if (bundle.format === 'taking-dnd-notes-character') {
         toast('Es un respaldo de personaje: impórtalo desde la sección Personajes de una campaña.', 'error');
         return;
       }

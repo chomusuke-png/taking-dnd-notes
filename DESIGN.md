@@ -1,4 +1,4 @@
-# Grimorio: manager de personajes y notas para D&D 5e (2014)
+# Taking D&D Notes: manager de personajes y notas para D&D 5e (2014)
 
 Documento de diseño. Lo que aquí está decidido guía la programación; lo marcado como **[abierto]** está pendiente de decisión.
 
