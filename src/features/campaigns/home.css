@@ -98,10 +98,21 @@
   border-top: 1px solid var(--border);
 }
 
-.home-footnote {
+.home-header-actions { display: flex; align-items: center; gap: 8px; }
+
+.data-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
   margin-top: 32px;
-  font-size: 0.82rem;
-  text-align: center;
+}
+.data-card h3 { font-size: 1rem; margin-bottom: 4px; }
+.data-card p { margin: 0 0 4px; }
+.ok-text { color: #43a047; }
+
+@media (max-width: 600px) {
+  .data-card { flex-direction: column; align-items: stretch; }
 }
 
 @media (max-width: 600px) {

@@ -16,6 +16,14 @@ export interface CampaignBundle {
   customEntries: CustomEntry[];
 }
 
+/** Respaldo de todas las campañas del navegador. */
+export interface FullBundle {
+  format: 'taking-dnd-notes-backup';
+  version: number;
+  exportedAt: string;
+  campaigns: CampaignBundle[];
+}
+
 export interface CharacterBundle {
   format: 'taking-dnd-notes-character';
   version: number;
@@ -44,6 +52,23 @@ export async function exportCampaign(id: Id, database: AppDB = defaultDb): Promi
     encounters,
     customEntries,
   };
+}
+
+export async function exportAll(database: AppDB = defaultDb): Promise<FullBundle> {
+  const campaigns = await database.campaigns.orderBy('name').toArray();
+  return {
+    format: 'taking-dnd-notes-backup',
+    version: BACKUP_VERSION,
+    exportedAt: new Date().toISOString(),
+    campaigns: await Promise.all(campaigns.map((c) => exportCampaign(c.id, database))),
+  };
+}
+
+/** Registra que estas campañas ya tienen respaldo, sin marcarlas como editadas. */
+export async function markExported(ids: Id[], database: AppDB = defaultDb, now = Date.now()): Promise<void> {
+  await database.transaction('rw', database.campaigns, async () => {
+    for (const id of ids) await database.campaigns.update(id, { lastExportedAt: now });
+  });
 }
 
 export async function exportCharacter(id: Id, database: AppDB = defaultDb): Promise<CharacterBundle> {
@@ -83,7 +108,23 @@ function checkVersion(data: Record<string, unknown>): void {
   }
 }
 
-export function parseBackup(text: string): CampaignBundle | CharacterBundle {
+function checkCampaignBundle(data: Record<string, unknown>): CampaignBundle {
+  const c = data.campaign;
+  if (!isObject(c) || typeof c.id !== 'string' || typeof c.name !== 'string') {
+    throw new ImportError('El respaldo no contiene una campaña válida.');
+  }
+  for (const key of ['characters', 'notes', 'encounters', 'customEntries'] as const) checkEntities(data[key], key);
+  return {
+    ...(data as unknown as CampaignBundle),
+    format: 'taking-dnd-notes-campaign',
+    characters: (data.characters as Character[]) ?? [],
+    notes: (data.notes as Note[]) ?? [],
+    encounters: (data.encounters as Encounter[]) ?? [],
+    customEntries: (data.customEntries as CustomEntry[]) ?? [],
+  };
+}
+
+export function parseBackup(text: string): CampaignBundle | CharacterBundle | FullBundle {
   let data: unknown;
   try {
     data = JSON.parse(text);
@@ -94,17 +135,17 @@ export function parseBackup(text: string): CampaignBundle | CharacterBundle {
 
   if (data.format === 'taking-dnd-notes-campaign') {
     checkVersion(data);
-    const c = data.campaign;
-    if (!isObject(c) || typeof c.id !== 'string' || typeof c.name !== 'string') {
-      throw new ImportError('El respaldo no contiene una campaña válida.');
+    return checkCampaignBundle(data);
+  }
+
+  if (data.format === 'taking-dnd-notes-backup') {
+    checkVersion(data);
+    if (!Array.isArray(data.campaigns) || !data.campaigns.every(isObject)) {
+      throw new ImportError('El respaldo completo no tiene una lista de campañas válida.');
     }
-    for (const key of ['characters', 'notes', 'encounters', 'customEntries'] as const) checkEntities(data[key], key);
     return {
-      ...(data as unknown as CampaignBundle),
-      characters: (data.characters as Character[]) ?? [],
-      notes: (data.notes as Note[]) ?? [],
-      encounters: (data.encounters as Encounter[]) ?? [],
-      customEntries: (data.customEntries as CustomEntry[]) ?? [],
+      ...(data as unknown as FullBundle),
+      campaigns: data.campaigns.map((c) => checkCampaignBundle(c as Record<string, unknown>)),
     };
   }
 
@@ -130,6 +171,8 @@ export async function importCampaign(bundle: CampaignBundle, database: AppDB = d
     name: nameTaken ? `${b.campaign.name} (importada)` : b.campaign.name,
     // Respaldos antiguos o editados a mano pueden traer ajustes incompletos.
     settings: { variantEncumbrance: false, ...(b.campaign.settings as Partial<CampaignSettings> | undefined) },
+    // Viene de un archivo: ya existe un respaldo de este contenido.
+    lastExportedAt: now,
     updatedAt: now,
   };
   await database.transaction(

@@ -6,7 +6,9 @@ import { ThemeToggle } from '../../components/Theme';
 import { countCampaignContent, createCampaign, deleteCampaign } from '../../db/campaigns';
 import { db } from '../../db/db';
 import type { Campaign } from '../../db/types';
+import { useInstallPrompt } from '../pwa/useInstallPrompt';
 import { CampaignFormDialog } from './CampaignFormDialog';
+import { DataCard } from './DataCard';
 import { useBackupActions } from './useBackupActions';
 import './home.css';
 
@@ -17,16 +19,24 @@ export function HomePage() {
   const [creating, setCreating] = useState(false);
   const [toDelete, setToDelete] = useState<Campaign | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-  const { exportOne, importFile } = useBackupActions();
+  const { exportOne, exportEverything, importFile } = useBackupActions();
+  const { canInstall, install } = useInstallPrompt();
 
   return (
     <div className="home">
       <header className="home-header">
         <div className="brand">
-          <img src="/favicon.svg" alt="" width={32} height={32} />
+          <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={32} height={32} />
           <h1>Taking D&D Notes</h1>
         </div>
-        <ThemeToggle />
+        <div className="home-header-actions">
+          {canInstall && (
+            <button className="btn btn-sm" onClick={() => void install()} title="Instalar Taking D&D Notes como app en este dispositivo">
+              📲 Instalar app
+            </button>
+          )}
+          <ThemeToggle />
+        </div>
       </header>
 
       <main className="home-main">
@@ -70,9 +80,7 @@ export function HomePage() {
           </ul>
         )}
 
-        <p className="home-footnote muted">
-          Los datos se guardan solo en este navegador. Exporta tus campañas de vez en cuando como respaldo.
-        </p>
+        <DataCard onExportAll={() => void exportEverything()} />
       </main>
 
       <CampaignFormDialog

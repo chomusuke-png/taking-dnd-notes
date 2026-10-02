@@ -1,6 +1,7 @@
 import { Navigate, RouterProvider, createHashRouter } from 'react-router-dom';
 import { useApplyTheme } from './components/Theme';
 import { Toasts } from './components/Toasts';
+import { PwaStatus } from './features/pwa/PwaStatus';
 import { HomePage } from './features/campaigns/HomePage';
 import { CharacterSheet } from './features/characters/CharacterSheet';
 import { CharactersPage } from './features/characters/CharactersPage';
@@ -42,6 +43,7 @@ export function App() {
     <>
       <RouterProvider router={router} />
       <Toasts />
+      <PwaStatus />
     </>
   );
 }

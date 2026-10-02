@@ -407,3 +407,20 @@ select.input { cursor: pointer; }
 .quick-hp .btn-sm { padding: 3px 10px; font-weight: 700; font-size: 1rem; }
 .hp-temp-sm { color: #64b5f6; font-weight: 600; }
 .chip-xs { font-size: 0.7rem; padding: 1px 8px; }
+
+/* ---------- Móvil y pantallas táctiles (F5) ---------- */
+
+@media (pointer: coarse) {
+  .pip { width: 22px; height: 22px; }
+  .btn-sm { padding: 6px 10px; }
+  .chip { padding: 5px 12px; }
+  .chip-xs { padding: 3px 10px; }
+  .prof-dot { width: 28px; min-height: 28px; }
+}
+
+@media (max-width: 760px) {
+  /* 16px evita que iOS haga zoom al enfocar un campo. */
+  .input,
+  .textarea,
+  select.input { font-size: 16px; }
+}

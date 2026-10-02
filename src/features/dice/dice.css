@@ -89,5 +89,5 @@
 
 @media (max-width: 760px) {
   /* Sobre la barra de navegación inferior. */
-  .dice-tray { right: 16px; bottom: 76px; }
+  .dice-tray { right: 16px; bottom: calc(76px + env(safe-area-inset-bottom)); }
 }

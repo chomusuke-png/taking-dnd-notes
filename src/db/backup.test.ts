@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { makeTestDb } from '../test/testDb';
 import {
-  BACKUP_VERSION, ImportError, exportCampaign, exportCharacter, importCampaign, importCharacter, parseBackup, remapIds,
+  BACKUP_VERSION, ImportError, exportAll, exportCampaign, exportCharacter, importCampaign, importCharacter, markExported,
+  parseBackup, remapIds,
   type CampaignBundle,
 } from './backup';
+import { backupReminder } from './backupReminder';
 import { createCampaign } from './campaigns';
 import { newCharacter } from './factories';
 import type { Note } from './types';
@@ -91,5 +93,48 @@ describe('export/import de personaje', () => {
     expect(copy.campaignId).toBe(other.id);
     expect(copy.noteId).toBeUndefined();
     expect(copy.name).toBe('Ireena');
+  });
+});
+
+describe('respaldo completo y recordatorio', () => {
+  it('exporta todas las campañas y las importa como copias marcadas con respaldo', async () => {
+    const { db } = await seed();
+    await createCampaign({ name: 'Otra' }, db);
+    const full = await exportAll(db);
+    expect(full.campaigns.map((c) => c.campaign.name)).toEqual(['Otra', 'Strahd']);
+
+    const parsed = parseBackup(JSON.stringify(full));
+    expect(parsed.format).toBe('taking-dnd-notes-backup');
+    if (parsed.format !== 'taking-dnd-notes-backup') return;
+    for (const b of parsed.campaigns) {
+      const imported = await importCampaign(b, db);
+      expect(imported.lastExportedAt).toBeGreaterThan(0);
+    }
+    expect(await db.campaigns.count()).toBe(4);
+    expect(await db.characters.count()).toBe(2);
+  });
+
+  it('rechaza un respaldo completo con campañas inválidas', () => {
+    const bad = { format: 'taking-dnd-notes-backup', version: 1, campaigns: [{ campaign: { id: 1 } }] };
+    expect(() => parseBackup(JSON.stringify(bad))).toThrow(ImportError);
+  });
+
+  it('marcar como exportado no cambia la fecha de edición', async () => {
+    const { db, campaign } = await seed();
+    const before = (await db.campaigns.get(campaign.id))!.updatedAt;
+    await markExported([campaign.id], db, 123);
+    const after = await db.campaigns.get(campaign.id);
+    expect(after?.lastExportedAt).toBe(123);
+    expect(after?.updatedAt).toBe(before);
+  });
+
+  it('recordatorio: solo con cambios sin respaldar, pasados 7 días y fuera de la pausa', () => {
+    const day = 86_400_000;
+    const base = { id: 'c', name: 'C', description: '', settings: { variantEncumbrance: false }, createdAt: 0, updatedAt: 5 * day };
+    expect(backupReminder(base, 6 * day).due).toBe(false); // recién creada
+    expect(backupReminder(base, 8 * day)).toEqual({ due: true, days: 8 });
+    expect(backupReminder({ ...base, lastExportedAt: 6 * day }, 20 * day).due).toBe(false); // sin cambios desde el respaldo
+    expect(backupReminder({ ...base, lastExportedAt: 1 * day }, 9 * day).due).toBe(true);
+    expect(backupReminder(base, 8 * day, 10 * day).due).toBe(false); // pospuesto
   });
 });
