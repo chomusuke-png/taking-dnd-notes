@@ -24,7 +24,7 @@ Documento de diseño. Lo que aquí está decidido guía la programación; lo mar
 - **Vitest** para probar el motor de reglas, que es donde un error se nota en la mesa.
 - Datos SRD: JSON de [5e-bits/5e-database](https://github.com/5e-bits/5e-database) (SRD 5.1, licencia CC-BY-4.0), empaquetados en la app y cargados de forma diferida.
 
-**[abierto]** El SRD viene en inglés. Opciones: (a) compendio en inglés y UI en español; (b) traducir nombres de conjuros, objetos y condiciones con un diccionario propio, de forma incremental. Propuesta: empezar con (a) y agregar una capa de traducción después.
+**Decidido:** el compendio SRD queda en inglés y la UI en español. Más adelante se agregará una capa de traducción de nombres (diccionario propio, incremental).
 
 ## 3. Arquitectura
 
@@ -135,8 +135,12 @@ Estilo visual: se mantiene el tema oscuro del prototipo (rojo para PG, dorado pa
 | **F5** | PWA offline, ajustes para móvil, respaldo automático (recordatorio de exportar) | Uso diario en el celular |
 | Futuro | Asistente de creación por raza y clase, subir de nivel, traducción del SRD, sync opcional | |
 
-## 8. Puntos abiertos
+## 8. Decisiones tomadas
 
-1. Idioma del compendio SRD (ver sección 2).
-2. ¿Tiradas de dados integradas (clic en una habilidad → tira 1d20 + mod, con historial)? Propuesta: sí, a partir de F1, porque es simple.
-3. ¿Retrato o imagen por personaje y nota? Se guardaría como blob en IndexedDB, lo que hace crecer los respaldos.
+1. Compendio SRD en inglés por ahora; traducción de nombres como mejora futura.
+2. Tiradas de dados integradas desde F1 (clic en una habilidad o ataque → tirada con historial).
+3. Retratos e imágenes: se posponen (harían crecer los respaldos).
+
+## 9. Estado
+
+- **F0 ✅**: proyecto Vite + React + TS, esquema Dexie v1 con todas las tablas del modelo, CRUD de campañas con borrado en cascada, export/import JSON de campañas y personajes (ids regenerados al importar), layout de campaña con navegación lateral (inferior en móvil), tema oscuro/claro/sistema, tests de la capa de datos.

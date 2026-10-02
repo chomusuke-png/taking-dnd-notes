@@ -1,0 +1,33 @@
+import { Navigate, RouterProvider, createHashRouter } from 'react-router-dom';
+import { useApplyTheme } from './components/Theme';
+import { Toasts } from './components/Toasts';
+import { HomePage } from './features/campaigns/HomePage';
+import { CampaignLayout } from './features/workspace/CampaignLayout';
+import { SectionPlaceholder } from './features/workspace/SectionPlaceholder';
+import { SettingsPage } from './features/workspace/SettingsPage';
+import { SECTIONS } from './features/workspace/sections';
+
+// Hash router: la app es estática (PWA) y no necesita reescrituras en el servidor.
+const router = createHashRouter([
+  { path: '/', element: <HomePage /> },
+  {
+    path: '/c/:campaignId',
+    element: <CampaignLayout />,
+    children: [
+      { index: true, element: <Navigate to="personajes" replace /> },
+      ...SECTIONS.map((s) => ({ path: s.path, element: <SectionPlaceholder section={s} /> })),
+      { path: 'ajustes', element: <SettingsPage /> },
+    ],
+  },
+  { path: '*', element: <Navigate to="/" replace /> },
+]);
+
+export function App() {
+  useApplyTheme();
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toasts />
+    </>
+  );
+}
