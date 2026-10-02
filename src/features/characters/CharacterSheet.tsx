@@ -16,6 +16,7 @@ import { ActionsTab } from './sheet/ActionsTab';
 import { FeaturesTab } from './sheet/FeaturesTab';
 import { IdentityEditor } from './sheet/IdentityEditor';
 import { InventoryTab } from './sheet/InventoryTab';
+import { NotesTab } from './sheet/NotesTab';
 import { SheetContext, type SheetContextValue } from './sheet/SheetContext';
 import { SpellsTab } from './sheet/SpellsTab';
 import { StatusPanel } from './sheet/StatusPanel';
@@ -26,6 +27,7 @@ const TABS = [
   { id: 'spells', label: 'Conjuros', Component: SpellsTab },
   { id: 'inventory', label: 'Inventario', Component: InventoryTab },
   { id: 'features', label: 'Rasgos', Component: FeaturesTab },
+  { id: 'notes', label: 'Notas', Component: NotesTab },
 ] as const;
 type TabId = (typeof TABS)[number]['id'];
 

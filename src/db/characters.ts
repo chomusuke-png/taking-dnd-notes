@@ -2,6 +2,7 @@ import { getClass } from '../rules/classes';
 import { averageHp } from '../rules/derive';
 import { db as defaultDb, type AppDB } from './db';
 import { newCharacter } from './factories';
+import { relabelInCampaign } from './notes';
 import type { Character, Id } from './types';
 
 export interface NewCharacterInput {
@@ -41,11 +42,14 @@ export async function updateCharacter(
   change: (c: Character) => Character,
   database: AppDB = defaultDb,
 ): Promise<void> {
-  await database.transaction('rw', database.characters, database.campaigns, async () => {
+  await database.transaction('rw', database.characters, database.campaigns, database.notes, async () => {
     const current = await database.characters.get(id);
     if (!current) return;
     const now = Date.now();
-    await database.characters.put({ ...change(current), id, updatedAt: now });
+    const next = { ...change(current), id, updatedAt: now };
+    await database.characters.put(next);
+    // Las menciones [[...]] en las notas muestran el nombre actual del personaje.
+    if (next.name !== current.name) await relabelInCampaign(current.campaignId, id, next.name, database);
     await database.campaigns.update(current.campaignId, { updatedAt: now });
   });
 }

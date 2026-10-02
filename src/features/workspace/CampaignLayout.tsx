@@ -1,9 +1,11 @@
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
 import { ThemeToggle } from '../../components/Theme';
 import { db } from '../../db/db';
 import type { Campaign } from '../../db/types';
 import { DiceTray } from '../dice/DiceTray';
+import { SearchPalette } from '../search/SearchPalette';
 import { SECTIONS } from './sections';
 import './workspace.css';
 
@@ -15,6 +17,18 @@ export function CampaignLayout() {
   const { campaignId = '' } = useParams();
   // null = no existe; undefined = cargando.
   const campaign = useLiveQuery(async () => (await db.campaigns.get(campaignId)) ?? null, [campaignId]);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((o) => !o);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   if (campaign === undefined) return null;
   if (campaign === null) {
@@ -65,7 +79,7 @@ export function CampaignLayout() {
             ←
           </Link>
           <span className="topbar-title">{campaign.name}</span>
-          <button className="search-trigger" disabled title="Búsqueda global: llega en F2">
+          <button className="search-trigger" onClick={() => setSearchOpen(true)} title="Buscar en la campaña (Ctrl+K)">
             🔍 Buscar… <kbd>Ctrl K</kbd>
           </button>
         </header>
@@ -74,6 +88,7 @@ export function CampaignLayout() {
         </main>
       </div>
       <DiceTray />
+      <SearchPalette campaignId={campaign.id} open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }

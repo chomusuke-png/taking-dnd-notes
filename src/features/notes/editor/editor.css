@@ -1,0 +1,117 @@
+.rich-editor { display: flex; flex-direction: column; min-height: 0; }
+
+.rich-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.tool {
+  min-width: 32px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tool:hover { background: var(--bg-hover); color: var(--text); }
+.tool.is-active { background: var(--bg-hover); color: var(--gold); }
+.tool-italic { font-style: italic; font-family: var(--font-display); }
+.tool-strike { text-decoration: line-through; }
+.tool-link { margin-left: auto; font-family: ui-monospace, monospace; }
+
+.rich-editor-body { flex: 1; }
+.rich-content {
+  min-height: 50vh;
+  padding: 16px 4px 64px;
+  outline: none;
+  line-height: 1.65;
+  font-size: 1rem;
+}
+.rich-content > * + * { margin-top: 0.6em; }
+.rich-content p { margin: 0; }
+.rich-content h1,
+.rich-content h2 { border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-top: 1.1em; }
+.rich-content h1 { font-size: 1.6rem; }
+.rich-content h2 { font-size: 1.3rem; }
+.rich-content h3 { font-size: 1.1rem; margin-top: 1em; }
+.rich-content ul,
+.rich-content ol { padding-left: 1.4em; margin: 0.4em 0; }
+.rich-content li p { margin: 0; }
+.rich-content blockquote {
+  margin: 0.6em 0;
+  padding: 4px 14px;
+  border-left: 3px solid var(--gold);
+  color: var(--text-muted);
+  font-style: italic;
+}
+.rich-content code { background: var(--bg-hover); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+.rich-content a { color: var(--gold); }
+.rich-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--text-muted);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Enlaces [[...]] */
+.wikilink {
+  color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  border-radius: 4px;
+  padding: 0 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.wikilink:hover { text-decoration: underline; }
+.wikilink[data-kind='character'] {
+  color: #64b5f6;
+  background: color-mix(in srgb, #64b5f6 12%, transparent);
+}
+.rich-content .suggestion { color: var(--gold); }
+
+/* Menú de sugerencias (lo monta TipTap en <body>). */
+.link-suggestions {
+  z-index: 60;
+  width: 300px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.link-suggestion {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.link-suggestion.is-selected { background: var(--bg-hover); }
+.link-suggestion.is-create .link-suggestion-label { color: var(--gold); }
+.link-suggestion-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.link-suggestion-empty { padding: 8px; font-size: 0.85rem; }

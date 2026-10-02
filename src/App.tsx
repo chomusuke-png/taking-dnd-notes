@@ -19,7 +19,10 @@ const router = createHashRouter([
       { index: true, element: <Navigate to="personajes" replace /> },
       { path: 'personajes', element: <CharactersPage /> },
       { path: 'personajes/:characterId', element: <CharacterSheet /> },
-      ...SECTIONS.filter((s) => s.path !== 'personajes').map((s) => ({
+      // El editor (TipTap) es la dependencia más pesada: se descarga solo al abrir notas.
+      { path: 'diario/:noteId?', lazy: async () => ({ Component: (await import('./features/notes/NotesPage')).JournalPage }) },
+      { path: 'wiki/:noteId?', lazy: async () => ({ Component: (await import('./features/notes/NotesPage')).WikiPage }) },
+      ...SECTIONS.filter((s) => s.phase).map((s) => ({
         path: s.path,
         element: <SectionPlaceholder section={s} />,
       })),
