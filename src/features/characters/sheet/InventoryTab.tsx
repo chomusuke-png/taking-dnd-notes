@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { NumberField, TextField } from '../../../components/fields';
 import type { InventoryItem } from '../../../db/types';
 import { newId } from '../../../lib/id';
+import { fold } from '../../../lib/text';
 import { carryingCapacity, encumbrance, inventoryWeight } from '../../../rules/derive';
+import { armorFromItem, attackFromWeapon, inventoryFromSrd } from '../../../rules/items';
+import { useSrd, useSrdIndex, type SrdItem } from '../../../srd';
+import { ITEM_CATEGORY_LABEL } from '../../../srd/labels';
+import { ItemDetail } from '../../compendium/details';
 import { useSheet } from './SheetContext';
 
 const ENCUMBRANCE_LABEL = {
@@ -14,22 +19,40 @@ const ENCUMBRANCE_LABEL = {
 
 const MAX_ATTUNED = 3;
 
-export const itemName = (it: InventoryItem): string => ('custom' in it.item ? it.item.custom : it.item.id);
-
 export function InventoryTab() {
   const { c, campaign, edit, update } = useSheet();
   const [name, setName] = useState('');
   const [qty, setQty] = useState('1');
   const [weight, setWeight] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const srdIndex = useSrdIndex('items');
+  // El catálogo completo solo se carga cuando se empieza a escribir un objeto nuevo.
+  const catalog = useSrd('items', name.trim().length >= 2);
+  const suggestions = useMemo(() => {
+    const q = fold(name.trim());
+    if (!catalog || q.length < 2) return [];
+    return catalog.filter((i) => fold(i.name).includes(q)).slice(0, 8);
+  }, [catalog, name]);
 
   const patch = (id: string, p: Partial<InventoryItem>) =>
     update((x) => ({ ...x, inventory: x.inventory.map((it) => (it.id === id ? { ...it, ...p } : it)) }));
+
+  function addSrd(item: SrdItem) {
+    const qtyN = Math.max(1, parseInt(qty, 10) || 1);
+    update((x) => ({ ...x, inventory: [...x.inventory, inventoryFromSrd(item, qtyN)] }));
+    setName('');
+    setQty('1');
+    setWeight('');
+  }
+
+  const srdOf = (it: InventoryItem) => ('source' in it.item && it.item.source === 'srd' ? srdIndex?.get(it.item.id) : undefined);
 
   function add() {
     if (!name.trim()) return;
     const item: InventoryItem = {
       id: newId(),
       item: { custom: name.trim() },
+      name: name.trim(),
       qty: Math.max(1, parseInt(qty, 10) || 1),
       weight: Math.max(0, parseFloat(weight.replace(',', '.')) || 0),
       equipped: false,
@@ -61,12 +84,18 @@ export function InventoryTab() {
           </tr>
         </thead>
         <tbody>
-          {c.inventory.map((it) => (
-            <tr key={it.id} className={it.equipped ? 'is-equipped' : undefined}>
+          {c.inventory.map((it) => {
+            const srd = srdOf(it);
+            const canAttack = srd?.weapon && !c.attacks.some((a) => a.name === it.name);
+            const armor = srd ? armorFromItem(c.armor, srd) : undefined;
+            const canEquipArmor = armor && JSON.stringify(armor) !== JSON.stringify(c.armor);
+            return (
+            <Fragment key={it.id}>
+            <tr className={it.equipped ? 'is-equipped' : undefined}>
               <td>
                 <input
                   type="checkbox"
-                  aria-label={`Equipar ${itemName(it)}`}
+                  aria-label={`Equipar ${it.name}`}
                   checked={it.equipped}
                   onChange={(e) => patch(it.id, { equipped: e.target.checked })}
                 />
@@ -76,11 +105,35 @@ export function InventoryTab() {
                   <TextField
                     className="input input-sm"
                     aria-label="Nombre"
-                    value={itemName(it)}
-                    onCommit={(v) => v && patch(it.id, { item: { custom: v } })}
+                    value={it.name}
+                    onCommit={(v) => v && patch(it.id, 'custom' in it.item ? { name: v, item: { custom: v } } : { name: v })}
                   />
+                ) : srd ? (
+                  <button type="button" className="item-name-btn" aria-expanded={expanded === it.id} onClick={() => setExpanded(expanded === it.id ? null : it.id)}>
+                    {it.name}
+                  </button>
                 ) : (
-                  itemName(it)
+                  it.name
+                )}
+                {canAttack && (
+                  <button
+                    type="button"
+                    className="chip item-action"
+                    title="Agregar este arma a la pestaña Acciones"
+                    onClick={() => update((x) => ({ ...x, attacks: [...x.attacks, attackFromWeapon(x, srd!)!] }))}
+                  >
+                    ＋ ataque
+                  </button>
+                )}
+                {canEquipArmor && (
+                  <button
+                    type="button"
+                    className="chip item-action"
+                    title="Usar para calcular la CA"
+                    onClick={() => update((x) => ({ ...x, armor: armorFromItem(x.armor, srd!)!, inventory: x.inventory.map((y) => (y.id === it.id ? { ...y, equipped: true } : y)) }))}
+                  >
+                    🛡️ usar para CA
+                  </button>
                 )}
               </td>
               <td className="num">
@@ -113,7 +166,7 @@ export function InventoryTab() {
               <td>
                 <input
                   type="checkbox"
-                  aria-label={`Sintonizar ${itemName(it)}`}
+                  aria-label={`Sintonizar ${it.name}`}
                   checked={it.attuned}
                   disabled={!it.attuned && attuned >= MAX_ATTUNED}
                   title={!it.attuned && attuned >= MAX_ATTUNED ? 'Máximo 3 objetos sintonizados' : 'Sintonizado'}
@@ -125,7 +178,7 @@ export function InventoryTab() {
                   <button
                     type="button"
                     className="btn btn-ghost btn-sm btn-danger"
-                    aria-label={`Eliminar ${itemName(it)}`}
+                    aria-label={`Eliminar ${it.name}`}
                     onClick={() => update((x) => ({ ...x, inventory: x.inventory.filter((y) => y.id !== it.id) }))}
                   >
                     ✕
@@ -133,7 +186,16 @@ export function InventoryTab() {
                 </td>
               )}
             </tr>
-          ))}
+            {expanded === it.id && srd && (
+              <tr className="item-detail-row">
+                <td colSpan={edit ? 6 : 5}>
+                  <ItemDetail item={srd} />
+                </td>
+              </tr>
+            )}
+            </Fragment>
+            );
+          })}
         </tbody>
       </table>
       {c.inventory.length === 0 && <p className="muted empty-inline">Inventario vacío.</p>}
@@ -148,10 +210,26 @@ export function InventoryTab() {
         <input className="input" placeholder="Agregar objeto…" aria-label="Nombre del objeto" value={name} onChange={(e) => setName(e.target.value)} />
         <input className="input input-xs" inputMode="numeric" aria-label="Cantidad" title="Cantidad" value={qty} onChange={(e) => setQty(e.target.value)} />
         <input className="input input-xs" inputMode="decimal" aria-label="Peso unitario (lb)" placeholder="lb" value={weight} onChange={(e) => setWeight(e.target.value)} />
-        <button type="submit" className="btn" disabled={!name.trim()}>
+        <button type="submit" className="btn" disabled={!name.trim()} title="Agregar como objeto libre">
           ＋
         </button>
+        {suggestions.length > 0 && (
+          <ul className="item-suggestions" role="listbox" aria-label="Objetos del SRD">
+            {suggestions.map((i) => (
+              <li key={i.id}>
+                <button type="button" onClick={() => addSrd(i)}>
+                  <span>{i.name}</span>
+                  <span className="muted small">
+                    {ITEM_CATEGORY_LABEL[i.category]}
+                    {i.weight ? ` · ${i.weight} lb` : ''}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </form>
+      <p className="muted small hint">Escribe para buscar en el SRD (en inglés: Rope, Longsword…) o agrega cualquier objeto libre con ＋.</p>
 
       <div className="carry">
         <span>

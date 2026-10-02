@@ -22,6 +22,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
+.notes-list-pane > :not(.notes-list) { flex-shrink: 0; }
 .notes-list-head { display: flex; justify-content: space-between; align-items: center; }
 .notes-list-head h2 { margin: 0; font-size: 1.25rem; }
 

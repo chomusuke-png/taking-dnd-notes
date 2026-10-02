@@ -1,0 +1,64 @@
+.compendium {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-bottom: 72px;
+}
+
+.compendium-list-pane {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 110px);
+  padding: 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+/* Solo la lista se encoge y hace scroll; el resto conserva su altura. */
+.compendium-list-pane > :not(.compendium-list) { flex-shrink: 0; }
+.compendium-kinds { display: grid; grid-template-columns: repeat(4, 1fr); }
+.compendium-kinds .seg-item { text-decoration: none; text-align: center; padding: 6px 2px; font-size: 0.75rem; }
+.compendium-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.compendium-filters .input { flex: 1; min-width: 130px; }
+.compendium-count { margin: 0; }
+
+.compendium-list { list-style: none; margin: 0 -6px; padding: 0; overflow-y: auto; flex: 1; }
+.compendium-item {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.compendium-item:hover { background: var(--bg-hover); }
+.compendium-item.is-active { background: var(--bg-hover); border-left-color: var(--accent); }
+.compendium-item-name { font-weight: 500; }
+.compendium-more { width: 100%; justify-content: center; }
+
+.compendium-detail {
+  min-width: 0;
+  padding: 20px 24px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.detail-actions { float: right; margin-left: 12px; }
+.compendium-back { display: none; font-size: 0.82rem; text-decoration: none; }
+.srd-attribution { margin: 32px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.72rem; }
+.srd-attribution a { color: inherit; }
+
+@media (max-width: 760px) {
+  .compendium { display: block; }
+  .compendium-list-pane { position: static; max-height: none; }
+  .compendium.has-detail .compendium-list-pane { display: none; }
+  .compendium:not(.has-detail) .compendium-detail { display: none; }
+  .compendium-back { display: block; margin-bottom: 8px; }
+  .compendium-detail { padding: 14px; }
+}

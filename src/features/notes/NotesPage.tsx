@@ -5,7 +5,7 @@ import { db } from '../../db/db';
 import { NOTE_TYPE_INFO, QUEST_STATUS_LABEL, WIKI_TYPES, createNote } from '../../db/notes';
 import type { Note, NoteType } from '../../db/types';
 import type { WorkspaceContext } from '../workspace/CampaignLayout';
-import { fold } from './editor/wikiLink';
+import { fold } from '../../lib/text';
 import { NoteView } from './NoteView';
 import './notes.css';
 

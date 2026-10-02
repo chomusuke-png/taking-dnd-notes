@@ -25,6 +25,12 @@ export class AppDB extends Dexie {
         ref.value = normalizeCharacter(c);
       }),
     );
+    // v3 (F3): nombre visible en los objetos del inventario.
+    this.version(3).upgrade((tx) =>
+      tx.table<Character>('characters').toCollection().modify((c, ref) => {
+        ref.value = normalizeCharacter(c);
+      }),
+    );
   }
 }
 

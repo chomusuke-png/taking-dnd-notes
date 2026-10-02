@@ -10,6 +10,7 @@ describe('normalizeCharacter', () => {
       proficiencies: { saves: ['str'], skills: { athletics: 1, arcana: 0.5 }, armor: [], weapons: [], tools: [], languages: [] },
       hp: { max: 12, current: 7, temp: 0 },
       spellcasting: { entries: [], slotsUsed: [1], pactSlotsUsed: 0 },
+      inventory: [{ id: 'i', item: { custom: 'Cuerda' }, qty: 1 }, { id: 'j', item: { source: 'srd', id: 'longsword' }, qty: 1 }],
     } as unknown as Character;
 
     const c = normalizeCharacter(old);
@@ -21,5 +22,6 @@ describe('normalizeCharacter', () => {
     expect(c.proficiencies.jackOfAllTrades).toBe(true);
     expect(c.spellcasting.slotsUsed).toEqual([1, 0, 0, 0, 0, 0, 0, 0, 0]);
     expect(c.currency.gp).toBe(0);
+    expect(c.inventory.map((i) => i.name)).toEqual(['Cuerda', 'longsword']);
   });
 });

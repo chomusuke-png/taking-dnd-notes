@@ -6,6 +6,7 @@ import { db } from '../../../db/db';
 import { NOTE_TYPE_INFO, createNote } from '../../../db/notes';
 import type { Id } from '../../../db/types';
 import { newId } from '../../../lib/id';
+import { fold } from '../../../lib/text';
 import { LinkSuggestions, type LinkSuggestionsHandle } from './LinkSuggestions';
 
 export interface LinkItem {
@@ -19,8 +20,6 @@ export interface LinkItem {
   create?: boolean;
 }
 
-/** Minúsculas y sin tildes, para comparar "Sildar" con "sildár". */
-export const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 const MAX_ITEMS = 8;
 

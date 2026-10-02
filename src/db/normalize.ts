@@ -26,6 +26,8 @@ export function normalizeCharacter(raw: Character): Character {
       c.proficiencies.jackOfAllTrades = true;
     }
   }
+  // v3 (F3): los objetos guardan su nombre visible.
+  c.inventory = c.inventory.map((it) => ({ ...it, name: it.name ?? ('custom' in it.item ? it.item.custom : it.item.id) }));
   const used = c.spellcasting.slotsUsed;
   c.spellcasting.slotsUsed = Array.from({ length: 9 }, (_, i) => used[i] ?? 0);
   return c;

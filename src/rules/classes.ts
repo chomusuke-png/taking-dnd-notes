@@ -13,22 +13,24 @@ export interface ClassInfo {
   saves: [Ability, Ability];
   caster: CasterType;
   spellAbility?: Ability;
+  /** Prepara conjuros cada día (clérigo, druida, mago, paladín, artífice) en lugar de conocerlos fijos. */
+  prepares?: boolean;
 }
 
 export const CLASSES: ClassInfo[] = [
-  { id: 'artificer', name: 'Artífice', hitDie: 8, saves: ['con', 'int'], caster: 'halfUp', spellAbility: 'int' },
+  { id: 'artificer', name: 'Artífice', hitDie: 8, saves: ['con', 'int'], caster: 'halfUp', spellAbility: 'int', prepares: true },
   { id: 'barbarian', name: 'Bárbaro', hitDie: 12, saves: ['str', 'con'], caster: 'none' },
   { id: 'bard', name: 'Bardo', hitDie: 8, saves: ['dex', 'cha'], caster: 'full', spellAbility: 'cha' },
-  { id: 'cleric', name: 'Clérigo', hitDie: 8, saves: ['wis', 'cha'], caster: 'full', spellAbility: 'wis' },
-  { id: 'druid', name: 'Druida', hitDie: 8, saves: ['int', 'wis'], caster: 'full', spellAbility: 'wis' },
+  { id: 'cleric', name: 'Clérigo', hitDie: 8, saves: ['wis', 'cha'], caster: 'full', spellAbility: 'wis', prepares: true },
+  { id: 'druid', name: 'Druida', hitDie: 8, saves: ['int', 'wis'], caster: 'full', spellAbility: 'wis', prepares: true },
   { id: 'fighter', name: 'Guerrero', hitDie: 10, saves: ['str', 'con'], caster: 'none' },
   { id: 'monk', name: 'Monje', hitDie: 8, saves: ['str', 'dex'], caster: 'none' },
-  { id: 'paladin', name: 'Paladín', hitDie: 10, saves: ['wis', 'cha'], caster: 'half', spellAbility: 'cha' },
+  { id: 'paladin', name: 'Paladín', hitDie: 10, saves: ['wis', 'cha'], caster: 'half', spellAbility: 'cha', prepares: true },
   { id: 'ranger', name: 'Explorador', hitDie: 10, saves: ['str', 'dex'], caster: 'half', spellAbility: 'wis' },
   { id: 'rogue', name: 'Pícaro', hitDie: 8, saves: ['dex', 'int'], caster: 'none' },
   { id: 'sorcerer', name: 'Hechicero', hitDie: 6, saves: ['con', 'cha'], caster: 'full', spellAbility: 'cha' },
   { id: 'warlock', name: 'Brujo', hitDie: 8, saves: ['wis', 'cha'], caster: 'pact', spellAbility: 'cha' },
-  { id: 'wizard', name: 'Mago', hitDie: 6, saves: ['int', 'wis'], caster: 'full', spellAbility: 'int' },
+  { id: 'wizard', name: 'Mago', hitDie: 6, saves: ['int', 'wis'], caster: 'full', spellAbility: 'int', prepares: true },
 ];
 
 /** Subclases que convierten en lanzador a una clase que no lo es. */

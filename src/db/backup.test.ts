@@ -13,7 +13,7 @@ async function seed() {
   const campaign = await createCampaign({ name: 'Strahd' }, db);
   const pc = newCharacter(campaign.id, { name: 'Ireena' });
   pc.inventory.push({
-    id: crypto.randomUUID(), item: { source: 'srd', id: 'longsword' }, qty: 1, equipped: true, attuned: false, weight: 3, notes: '',
+    id: crypto.randomUUID(), item: { source: 'srd', id: 'longsword' }, name: 'Longsword', qty: 1, equipped: true, attuned: false, weight: 3, notes: '',
   });
   const note: Note = {
     id: crypto.randomUUID(), campaignId: campaign.id, type: 'npc', title: 'Ireena', aliases: [], tags: ['barovia'],

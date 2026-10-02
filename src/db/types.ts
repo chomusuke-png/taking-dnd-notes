@@ -83,6 +83,8 @@ export interface SpellcastingEntry {
 export interface InventoryItem {
   id: Id;
   item: EntryRef | { custom: string };
+  /** Nombre visible (copia del SRD o texto libre): evita cargar el compendio para mostrar el inventario. */
+  name: string;
   qty: number;
   equipped: boolean;
   attuned: boolean;

@@ -1,3 +1,4 @@
+import { fold } from '../../lib/text';
 import MiniSearch from 'minisearch';
 import { NOTE_TYPE_INFO, notePath } from '../../db/notes';
 import type { Character, Note } from '../../db/types';
@@ -17,8 +18,6 @@ export interface SearchDoc {
   hint: string;
   updatedAt: number;
 }
-
-const fold = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
 export function toSearchDocs(notes: Note[], characters: Character[]): SearchDoc[] {
   return [

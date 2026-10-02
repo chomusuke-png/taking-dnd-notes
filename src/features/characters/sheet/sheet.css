@@ -293,3 +293,115 @@ button.vital:not(:disabled):hover { border-color: var(--gold); }
   .hp-controls { grid-template-columns: 1fr 1fr 1fr; }
   .hp-controls .input { grid-column: 1 / -1; }
 }
+
+/* ---------- Conjuros (F3) ---------- */
+
+.class-spells { margin-top: 8px; }
+.over-limit { color: var(--danger); }
+.spell-level-title {
+  margin: 12px 0 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.spell-list { list-style: none; margin: 0; padding: 0; }
+.spell-row { border-bottom: 1px solid var(--border); }
+.spell-row.is-unprepared .spell-name { color: var(--text-muted); }
+.spell-row-main { display: grid; grid-template-columns: 22px 1fr auto auto auto; align-items: center; gap: 8px; padding: 5px 0; }
+.prep-toggle { width: 22px; border: 0; background: transparent; color: var(--text-muted); cursor: pointer; padding: 0; }
+.prep-toggle.is-on { color: var(--gold); }
+.spell-name {
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.spell-name:hover { color: var(--gold); }
+.spell-flag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0 4px;
+  border: 1px solid var(--text-muted);
+  border-radius: 3px;
+  color: var(--text-muted);
+}
+.spell-meta { white-space: nowrap; }
+.cast-options { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 0 8px 30px; }
+.spell-detail-inline { padding: 4px 0 12px 30px; font-size: 0.92rem; }
+.spell-detail-inline .srd-props { grid-template-columns: 1fr 1fr; }
+
+.spell-picker { margin-bottom: 10px; padding: 10px; }
+.spell-picker-filters { display: flex; gap: 6px; margin-bottom: 8px; }
+.spell-picker-filters .input:first-child { flex: 1; }
+.spell-picker-list { list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto; }
+.spell-picker-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.spell-picker-item:hover:not(:disabled) { background: var(--bg-hover); }
+.spell-picker-item:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Inventario con SRD (F3) ---------- */
+
+.item-name-btn {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline dotted var(--text-muted);
+  text-underline-offset: 3px;
+}
+.item-name-btn:hover { color: var(--gold); }
+.item-action { margin-left: 6px; font-size: 0.72rem; padding: 1px 8px; }
+.item-detail-row td { background: var(--bg); padding: 12px 16px; }
+.item-detail-row .srd-title { font-size: 1.2rem; }
+
+.add-item { position: relative; flex-wrap: wrap; }
+.item-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.item-suggestions button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+}
+.item-suggestions button:hover { background: var(--bg-hover); }

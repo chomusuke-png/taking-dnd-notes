@@ -119,7 +119,7 @@ describe('PG, dados de golpe y carga', () => {
 
   it('el peso incluye monedas; carga variante', () => {
     const c = pc([], { abilities: { ...abilities, str: 10 } });
-    c.inventory = [{ id: 'a', item: { custom: 'Cuerda' }, qty: 2, equipped: false, attuned: false, weight: 10, notes: '' }];
+    c.inventory = [{ id: 'a', item: { custom: 'Cuerda' }, name: 'Cuerda', qty: 2, equipped: false, attuned: false, weight: 10, notes: '' }];
     c.currency = { cp: 0, sp: 0, ep: 0, gp: 100, pp: 0 };
     expect(inventoryWeight(c)).toBe(22);
     expect(encumbrance(c)).toBe('normal');
