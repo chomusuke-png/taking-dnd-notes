@@ -6,6 +6,7 @@ import { db } from '../../db/db';
 import type { Campaign } from '../../db/types';
 import { DiceTray } from '../dice/DiceTray';
 import { SearchPalette } from '../search/SearchPalette';
+import { BackupBanner } from './BackupBanner';
 import { SECTIONS } from './sections';
 import './workspace.css';
 
@@ -83,6 +84,7 @@ export function CampaignLayout() {
             🔍 Buscar… <kbd>Ctrl K</kbd>
           </button>
         </header>
+        <BackupBanner key={`backup-${campaign.id}`} campaign={campaign} />
         <main className="workspace-content" key={campaign.id}>
           <Outlet context={{ campaign } satisfies WorkspaceContext} />
         </main>

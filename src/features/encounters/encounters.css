@@ -176,6 +176,7 @@
   .encounters-page.has-encounter .encounters-list-pane { display: none; }
   .encounters-page:not(.has-encounter) .encounters-main { display: none; }
   .encounter-back { display: block; }
+  .encounter-toolbar { position: static; }
   .encounter-meta { align-items: flex-start; }
   .add-custom { grid-template-columns: 1fr 1fr; }
 }

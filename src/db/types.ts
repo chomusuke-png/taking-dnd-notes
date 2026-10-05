@@ -62,6 +62,8 @@ export interface Campaign {
   name: string;
   description: string;
   settings: CampaignSettings;
+  /** Última vez que se exportó un respaldo (para el recordatorio). */
+  lastExportedAt?: number;
   createdAt: number;
   updatedAt: number;
 }

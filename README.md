@@ -12,7 +12,19 @@ npm run dev        # http://localhost:5173
 npm test           # tests (Vitest)
 npm run build      # typecheck + build de producción en dist/
 npm run srd        # regenera src/srd/data/ desde 5e-bits/5e-database (requiere red)
+npm run preview    # sirve dist/ para probar la PWA (service worker, offline)
+npx pwa-assets-generator   # regenera los íconos desde public/icon.svg
 ```
+
+## Publicar
+
+`npm run build` deja una app estática en `dist/`. Se puede subir a cualquier hosting estático
+(GitHub Pages, Netlify, Cloudflare Pages, un servidor propio…), en la raíz o en un subdirectorio:
+usa rutas relativas y el router con `#`, así que no necesita configurar reescrituras. Para que
+el navegador ofrezca instalarla y funcione offline debe servirse por **HTTPS** (o `localhost`).
+
+Los datos de cada persona quedan en su navegador; para pasarlos a otro dispositivo se usa
+"Respaldar todo" e "Importar" en la pantalla de inicio.
 
 ## Licencias de contenido
 
