@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { db } from '../../db/db';
 import type { Id } from '../../db/types';
 import { buildIndex, excerpt, toSearchDocs, type SearchDoc } from './searchIndex';
@@ -68,7 +69,7 @@ export function SearchPalette({ campaignId, open, onClose }: Props) {
       {open && (
         <>
           <div className="search-input-row">
-            <span aria-hidden>🔍</span>
+            <Icon name="search" />
             <input
               autoFocus
               className="search-input"
@@ -107,7 +108,7 @@ export function SearchPalette({ campaignId, open, onClose }: Props) {
                 onClick={() => go(d)}
               >
                 <span className="search-result-icon" aria-hidden>
-                  {d.icon}
+                  <Icon name={d.icon} />
                 </span>
                 <span className="search-result-body">
                   <span className="search-result-title">{d.title}</span>

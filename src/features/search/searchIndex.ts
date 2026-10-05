@@ -1,3 +1,4 @@
+import type { IconName } from '../../components/Icon';
 import { fold } from '../../lib/text';
 import MiniSearch from 'minisearch';
 import { NOTE_TYPE_INFO, notePath } from '../../db/notes';
@@ -14,7 +15,7 @@ export interface SearchDoc {
   body: string;
   /** Ruta relativa a la campaña. */
   path: string;
-  icon: string;
+  icon: IconName;
   hint: string;
   updatedAt: number;
 }
@@ -41,7 +42,7 @@ export function toSearchDocs(notes: Note[], characters: Character[]): SearchDoc[
       tags: '',
       body: [c.background, ...c.classes.map(className), ...c.features.map((f) => f.name)].join(' '),
       path: `personajes/${c.id}`,
-      icon: '🧙',
+      icon: 'characters' as const,
       hint: c.kind === 'pc' ? 'Personaje' : 'PNJ (hoja)',
       updatedAt: c.updatedAt,
     })),

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Icon } from '../../components/Icon';
 import { useUi } from '../../store/ui';
 
 type Persist = 'unsupported' | 'persisted' | 'best-effort';
@@ -38,10 +39,10 @@ export function DataCard({ onExportAll }: { onExportAll: () => void }) {
           Todo se guarda solo en este navegador. Si borras los datos del sitio o cambias de dispositivo, necesitarás un
           respaldo.{usage !== null && ` Espacio usado (incluida la app sin conexión): ${formatBytes(usage)}.`}
         </p>
-        {persist === 'persisted' && <p className="small ok-text">🔒 Almacenamiento protegido: el navegador no lo borrará automáticamente.</p>}
+        {persist === 'persisted' && <p className="small ok-text"><Icon name="lock" /> Almacenamiento protegido: el navegador no lo borrará automáticamente.</p>}
         {persist === 'best-effort' && (
           <p className="small warning">
-            ⚠️ El navegador podría borrar los datos si le falta espacio.{' '}
+            <Icon name="warning" /> El navegador podría borrar los datos si le falta espacio.{' '}
             <button type="button" className="btn btn-sm" onClick={() => void requestPersist()}>
               Proteger datos
             </button>
@@ -49,7 +50,7 @@ export function DataCard({ onExportAll }: { onExportAll: () => void }) {
         )}
       </div>
       <button type="button" className="btn" onClick={onExportAll}>
-        ⬇️ Respaldar todo
+        <Icon name="backup" /> Respaldar todo
       </button>
     </section>
   );

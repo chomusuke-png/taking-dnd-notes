@@ -32,6 +32,10 @@ El compendio incluye material del System Reference Document 5.1 de Wizards of th
 con licencia [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/legalcode). Los datos
 estructurados provienen de [5e-bits/5e-database](https://github.com/5e-bits/5e-database) (MIT).
 
+Los íconos son de [game-icons.net](https://game-icons.net) (Lorc, Delapouite y colaboradores),
+con licencia [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), y se usan a través de
+[react-icons](https://github.com/react-icons/react-icons).
+
 ## Estructura
 
 ```
@@ -40,7 +44,7 @@ src/
   rules/       motor de reglas 5e 2014 (funciones puras con tests)
   srd/         compendio SRD: tipos, transformación y datos generados
   features/    pantallas por sección (campaigns, workspace, ...)
-  components/  UI compartida (Dialog, Toasts, Theme)
+  components/  UI compartida (Dialog, Icon, Toasts, Theme)
   lib/ store/  utilidades y estado de UI (Zustand)
   styles/      tokens de tema y estilos base
 ```

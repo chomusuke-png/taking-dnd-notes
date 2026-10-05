@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { deleteCampaign, updateCampaign } from '../../db/campaigns';
 import { useUi } from '../../store/ui';
@@ -78,7 +79,7 @@ export function SettingsPage() {
           otro dispositivo.
         </p>
         <button className="btn" onClick={() => exportOne(campaign)}>
-          ⬇️ Exportar campaña
+          <Icon name="export" /> Exportar campaña
         </button>
       </section>
 

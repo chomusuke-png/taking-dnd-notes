@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import type { SuggestionProps } from '@tiptap/suggestion';
+import { Icon } from '../../../components/Icon';
 import type { LinkItem } from './wikiLink';
 
 export interface LinkSuggestionsHandle {
@@ -55,7 +56,7 @@ export const LinkSuggestions = forwardRef<LinkSuggestionsHandle, SuggestionProps
             onClick={() => pick(i)}
           >
             <span className="link-suggestion-icon" aria-hidden>
-              {item.icon}
+              <Icon name={item.icon} />
             </span>
             <span className="link-suggestion-label">{item.create ? `Crear «${item.label}»` : item.label}</span>
             <span className="muted small">{item.hint}</span>

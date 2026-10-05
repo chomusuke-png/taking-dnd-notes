@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { ListField, NumberField, TextField } from '../../components/fields';
 import { db } from '../../db/db';
@@ -57,7 +58,7 @@ export function NoteView({ noteId, campaignId, backTo }: Props) {
         </Link>
         <div className="note-title-row">
           <span className="note-type-icon" aria-hidden>
-            {NOTE_TYPE_INFO[note.type].icon}
+            <Icon name={NOTE_TYPE_INFO[note.type].icon} />
           </span>
           <TextField className="note-title-input" aria-label="Título" value={note.title} onCommit={(title) => patch({ title })} />
         </div>
@@ -147,7 +148,7 @@ function NoteMeta({ note, patch }: { note: Note; patch: (p: NotePatch) => void }
           <select className="input input-sm" value={note.type} onChange={(e) => patch({ type: e.target.value as NoteType })}>
             {NOTE_TYPES.filter((t) => t !== 'session').map((t) => (
               <option key={t} value={t}>
-                {NOTE_TYPE_INFO[t].icon} {NOTE_TYPE_INFO[t].label}
+                {NOTE_TYPE_INFO[t].label}
               </option>
             ))}
           </select>

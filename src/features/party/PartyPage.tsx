@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { QuickHp } from '../../components/QuickHp';
 import { updateCharacter } from '../../db/characters';
@@ -31,7 +32,7 @@ export function PartyPage() {
     return (
       <div className="placeholder">
         <p className="placeholder-icon" aria-hidden>
-          🛡️
+          <Icon name="party" />
         </p>
         <h2>El grupo está vacío</h2>
         <p className="muted">Crea los personajes jugadores para ver aquí sus PG, CA, pasivas y condiciones.</p>
@@ -55,10 +56,10 @@ export function PartyPage() {
         </div>
         <div className="toolbar-actions">
           <button className="btn" onClick={() => setRest('short')}>
-            ☕ Descanso corto del grupo
+            <Icon name="shortRest" /> Descanso corto del grupo
           </button>
           <button className="btn" onClick={() => setRest('long')}>
-            🛏️ Descanso largo del grupo
+            <Icon name="longRest" /> Descanso largo del grupo
           </button>
         </div>
       </div>
@@ -142,15 +143,15 @@ function PartyCard({ c, campaignId }: { c: Character; campaignId: string }) {
           aria-pressed={c.inspiration}
           onClick={() => void updateCharacter(c.id, (x) => ({ ...x, inspiration: !x.inspiration }))}
         >
-          ✨
+          <Icon name="inspiration" />
         </button>
       </div>
 
       <div className="party-vitals">
-        <span title="Clase de armadura">🛡️ <strong>{armorClass(c)}</strong></span>
-        <span title="Iniciativa">⚡ {formatMod(initiative(c))}</span>
-        <span title="Percepción pasiva">👁️ {passiveScore(c, 'perception')}</span>
-        <span title="Velocidad">🏃 {c.speed}</span>
+        <span title="Clase de armadura"><Icon name="armorClass" /> <strong>{armorClass(c)}</strong></span>
+        <span title="Iniciativa"><Icon name="initiative" /> {formatMod(initiative(c))}</span>
+        <span title="Percepción pasiva"><Icon name="perception" /> {passiveScore(c, 'perception')}</span>
+        <span title="Velocidad"><Icon name="speed" /> {c.speed}</span>
       </div>
 
       <div className="party-hp">
@@ -166,7 +167,7 @@ function PartyCard({ c, campaignId }: { c: Character; campaignId: string }) {
 
       {down && (
         <p className="small death-line">
-          {c.deathSaves.fail >= 3 ? '💀 Muerto' : `Salvaciones de muerte: ${c.deathSaves.success} ✓ · ${c.deathSaves.fail} ✗`}
+          {c.deathSaves.fail >= 3 ? <><Icon name="dead" /> Muerto</> : `Salvaciones de muerte: ${c.deathSaves.success} ✓ · ${c.deathSaves.fail} ✗`}
         </p>
       )}
 

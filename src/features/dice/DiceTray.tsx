@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Icon } from '../../components/Icon';
 import type { RollMode } from '../../rules/dice';
 import { useDice, type RollEntry } from './diceStore';
 import './dice.css';
@@ -91,7 +92,8 @@ export function DiceTray() {
         aria-expanded={open}
         title="Tiradas de dados"
       >
-        🎲{mode === 'advantage' ? ' V' : mode === 'disadvantage' ? ' D' : ''}
+        <Icon name="dice" />
+        {mode === 'advantage' ? ' V' : mode === 'disadvantage' ? ' D' : ''}
       </button>
     </div>
   );

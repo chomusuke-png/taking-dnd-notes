@@ -122,3 +122,6 @@
     padding-right: 16px;
   }
 }
+
+.home-credits { margin-top: 16px; text-align: center; }
+.home-credits a { color: inherit; }

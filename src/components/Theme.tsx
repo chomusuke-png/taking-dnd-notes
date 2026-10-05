@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useUi, type ThemePref } from '../store/ui';
+import { Icon, type IconName } from './Icon';
 
 /** Aplica la preferencia de tema como data-theme en <html>. */
 export function useApplyTheme(): void {
@@ -18,13 +19,17 @@ export function useApplyTheme(): void {
 }
 
 const NEXT: Record<ThemePref, ThemePref> = { system: 'dark', dark: 'light', light: 'system' };
-const LABEL: Record<ThemePref, string> = { system: '🖥️ Sistema', dark: '🌙 Oscuro', light: '☀️ Claro' };
+const LABEL: Record<ThemePref, { icon: IconName; text: string }> = {
+  system: { icon: 'themeSystem', text: 'Sistema' },
+  dark: { icon: 'themeDark', text: 'Oscuro' },
+  light: { icon: 'themeLight', text: 'Claro' },
+};
 
 export function ThemeToggle() {
   const { theme, setTheme } = useUi();
   return (
     <button type="button" className="btn btn-ghost btn-sm" onClick={() => setTheme(NEXT[theme])} title="Cambiar tema">
-      {LABEL[theme]}
+      <Icon name={LABEL[theme].icon} /> {LABEL[theme].text}
     </button>
   );
 }

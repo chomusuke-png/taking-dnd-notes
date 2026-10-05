@@ -102,7 +102,7 @@ export function ActionsTab() {
           ＋ Agregar ataque
         </button>
       )}
-      <p className="muted small hint">Clic en el bono para tirar el ataque y en el daño para tirar el daño. Usa 🎲 para ventaja o desventaja.</p>
+      <p className="muted small hint">Clic en el bono para tirar el ataque y en el daño para tirar el daño. Usa el botón de dados para ventaja o desventaja.</p>
 
       <AttackDialog key={editing?.id ?? 'closed'} attack={editing} onClose={() => setEditing(null)} onSave={save} />
     </div>

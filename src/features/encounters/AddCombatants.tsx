@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Icon } from '../../components/Icon';
 import type { Character, Combatant, Encounter } from '../../db/types';
 import { fold } from '../../lib/text';
 import { characterCombatant, customCombatant, monsterCombatants } from '../../rules/encounter';
@@ -21,13 +22,13 @@ export function AddCombatants({ enc, characters, onAdd }: Props) {
       <div className="add-combatants-buttons">
         {(
           [
-            ['monsters', '🐉 Monstruos'],
-            ['characters', '🧙 Personajes'],
-            ['custom', '✏️ Otro'],
+            ['monsters', 'monster', 'Monstruos'],
+            ['characters', 'characters', 'Personajes'],
+            ['custom', 'edit', 'Otro'],
           ] as const
-        ).map(([m, text]) => (
+        ).map(([m, icon, text]) => (
           <button key={m} type="button" className={mode === m ? 'btn btn-sm btn-primary' : 'btn btn-sm'} onClick={() => setMode(mode === m ? null : m)}>
-            ＋ {text}
+            ＋ <Icon name={icon} /> {text}
           </button>
         ))}
       </div>

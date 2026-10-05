@@ -1,16 +1,17 @@
+import type { IconName } from '../components/Icon';
 import { newId } from '../lib/id';
 import { emptyDoc, extractLinks, relabelMentions } from '../lib/richText';
 import { db as defaultDb, type AppDB } from './db';
 import type { Id, Note, NoteType } from './types';
 
-export const NOTE_TYPE_INFO: Record<NoteType, { label: string; plural: string; icon: string }> = {
-  session: { label: 'Sesión', plural: 'Sesiones', icon: '📜' },
-  npc: { label: 'PNJ', plural: 'PNJ', icon: '🎭' },
-  location: { label: 'Lugar', plural: 'Lugares', icon: '🏰' },
-  quest: { label: 'Misión', plural: 'Misiones', icon: '❗' },
-  faction: { label: 'Facción', plural: 'Facciones', icon: '⚜️' },
-  item: { label: 'Objeto', plural: 'Objetos', icon: '💎' },
-  free: { label: 'General', plural: 'General', icon: '📝' },
+export const NOTE_TYPE_INFO: Record<NoteType, { label: string; plural: string; icon: IconName }> = {
+  session: { label: 'Sesión', plural: 'Sesiones', icon: 'session' },
+  npc: { label: 'PNJ', plural: 'PNJ', icon: 'npc' },
+  location: { label: 'Lugar', plural: 'Lugares', icon: 'location' },
+  quest: { label: 'Misión', plural: 'Misiones', icon: 'quest' },
+  faction: { label: 'Facción', plural: 'Facciones', icon: 'faction' },
+  item: { label: 'Objeto', plural: 'Objetos', icon: 'item' },
+  free: { label: 'General', plural: 'General', icon: 'note' },
 };
 
 export const WIKI_TYPES: NoteType[] = ['npc', 'location', 'quest', 'faction', 'item', 'free'];

@@ -9,7 +9,7 @@ export function damageCharacter(id: Id, amount: number): Promise<void> {
   const toast = useUi.getState().toast;
   return updateCharacter(id, (c) => {
     const { character, outcome } = applyDamage(c, amount);
-    if (outcome === 'dead') toast(`💀 ${c.name} ha muerto.`, 'error');
+    if (outcome === 'dead') toast(`${c.name} ha muerto.`, 'error');
     else if (outcome === 'down' && c.hp.current > 0) toast(`${c.name} cae inconsciente.`, 'error');
     return character;
   });

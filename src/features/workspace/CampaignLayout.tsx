@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ThemeToggle } from '../../components/Theme';
 import { db } from '../../db/db';
 import type { Campaign } from '../../db/types';
@@ -57,14 +58,14 @@ export function CampaignLayout() {
           {SECTIONS.map((s) => (
             <NavLink key={s.path} to={s.path} className="nav-item">
               <span className="nav-icon" aria-hidden>
-                {s.icon}
+                <Icon name={s.icon} />
               </span>
               <span className="nav-label">{s.label}</span>
             </NavLink>
           ))}
           <NavLink to="ajustes" className="nav-item nav-settings">
             <span className="nav-icon" aria-hidden>
-              ⚙️
+              <Icon name="settings" />
             </span>
             <span className="nav-label">Ajustes</span>
           </NavLink>
@@ -81,7 +82,7 @@ export function CampaignLayout() {
           </Link>
           <span className="topbar-title">{campaign.name}</span>
           <button className="search-trigger" onClick={() => setSearchOpen(true)} title="Buscar en la campaña (Ctrl+K)">
-            🔍 Buscar… <kbd>Ctrl K</kbd>
+            <Icon name="search" /> Buscar… <kbd>Ctrl K</kbd>
           </button>
         </header>
         <BackupBanner key={`backup-${campaign.id}`} campaign={campaign} />

@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useRef, useState } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ImportError, importCharacter, parseBackup } from '../../db/backup';
 import { createCharacter } from '../../db/characters';
 import { db } from '../../db/db';
@@ -63,7 +64,7 @@ export function CharactersPage() {
         </div>
         <div className="toolbar-actions">
           <button className="btn" onClick={() => fileInput.current?.click()}>
-            ⬆️ Importar
+            <Icon name="import" /> Importar
           </button>
           <button className="btn btn-primary" onClick={() => setCreating(true)}>
             ＋ Nuevo {filter === 'pc' ? 'personaje' : 'PNJ'}
@@ -84,7 +85,9 @@ export function CharactersPage() {
 
       {characters !== undefined && visible.length === 0 ? (
         <div className="empty-state">
-          <p className="empty-icon">{filter === 'pc' ? '🧙' : '🎭'}</p>
+          <p className="empty-icon">
+            <Icon name={filter === 'pc' ? 'characters' : 'npc'} />
+          </p>
           <h3>{filter === 'pc' ? 'Aún no hay personajes jugadores' : 'Aún no hay PNJ con hoja'}</h3>
           <p className="muted">
             {filter === 'pc'
@@ -132,9 +135,9 @@ function CharacterCard({ c }: { c: Character }) {
           {level > 0 && <span className="level-badge">Nv {level}</span>}
         </div>
         <div className="character-card-stats">
-          <span title="Clase de armadura">🛡️ {armorClass(c)}</span>
+          <span title="Clase de armadura"><Icon name="armorClass" /> {armorClass(c)}</span>
           <span title="Puntos de golpe">
-            ❤️ {c.hp.current}/{c.hp.max}
+            <Icon name="hp" /> {c.hp.current}/{c.hp.max}
             {c.hp.temp > 0 && <span className="temp"> +{c.hp.temp}</span>}
           </span>
           {c.player && <span className="muted small">{c.player}</span>}

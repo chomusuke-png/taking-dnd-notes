@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link } from 'react-router-dom';
+import { Icon } from '../../../components/Icon';
 import { db } from '../../../db/db';
 import { backlinks, notePath } from '../../../db/notes';
 import { BacklinkList } from '../../notes/BacklinkList';
@@ -22,7 +23,7 @@ export function NotesTab() {
           <ul className="backlinks">
             {profiles.map((n) => (
               <li key={n.id}>
-                <Link to={`/c/${c.campaignId}/${notePath(n)}`}>🎭 {n.title}</Link>
+                <Link to={`/c/${c.campaignId}/${notePath(n)}`}><Icon name="npc" /> {n.title}</Link>
               </li>
             ))}
           </ul>

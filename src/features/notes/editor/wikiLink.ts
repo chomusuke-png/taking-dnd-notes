@@ -2,6 +2,7 @@ import { mergeAttributes } from '@tiptap/core';
 import Mention from '@tiptap/extension-mention';
 import { ReactRenderer } from '@tiptap/react';
 import type { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
+import type { IconName } from '../../../components/Icon';
 import { db } from '../../../db/db';
 import { NOTE_TYPE_INFO, createNote } from '../../../db/notes';
 import type { Id } from '../../../db/types';
@@ -15,7 +16,7 @@ export interface LinkItem {
   kind: 'note' | 'character';
   /** Texto secundario: tipo de nota o "Personaje". */
   hint: string;
-  icon: string;
+  icon: IconName;
   /** Si es true, al elegirlo se crea una nota nueva con este título. */
   create?: boolean;
 }
@@ -57,14 +58,14 @@ export async function findLinkTargets(campaignId: Id, rawQuery: string, excludeI
     const s = score([c.name]);
     if (s >= 0) {
       scored.push({
-        id: c.id, label: c.name, kind: 'character', hint: c.kind === 'pc' ? 'Personaje' : 'PNJ (hoja)', icon: '🧙', score: s,
+        id: c.id, label: c.name, kind: 'character', hint: c.kind === 'pc' ? 'Personaje' : 'PNJ (hoja)', icon: 'characters', score: s,
       });
     }
   }
 
   const items: LinkItem[] = scored.sort((a, b) => b.score - a.score).slice(0, MAX_ITEMS);
   if (query && !items.some((i) => fold(i.label) === q)) {
-    items.push({ id: newId(), label: query, kind: 'note', hint: 'Crear nota nueva', icon: '＋', create: true });
+    items.push({ id: newId(), label: query, kind: 'note', hint: 'Crear nota nueva', icon: 'edit', create: true });
   }
   return items;
 }

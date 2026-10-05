@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { ThemeToggle } from '../../components/Theme';
 import { countCampaignContent, createCampaign, deleteCampaign } from '../../db/campaigns';
@@ -32,7 +33,7 @@ export function HomePage() {
         <div className="home-header-actions">
           {canInstall && (
             <button className="btn btn-sm" onClick={() => void install()} title="Instalar Taking D&D Notes como app en este dispositivo">
-              📲 Instalar app
+              <Icon name="install" /> Instalar app
             </button>
           )}
           <ThemeToggle />
@@ -44,7 +45,7 @@ export function HomePage() {
           <h2>Campañas</h2>
           <div className="home-actions">
             <button className="btn" onClick={() => fileInput.current?.click()}>
-              ⬆️ Importar
+              <Icon name="import" /> Importar
             </button>
             <button className="btn btn-primary" onClick={() => setCreating(true)}>
               ＋ Nueva campaña
@@ -65,7 +66,7 @@ export function HomePage() {
 
         {campaigns === undefined ? null : campaigns.length === 0 ? (
           <div className="empty-state">
-            <p className="empty-icon">📜</p>
+            <p className="empty-icon"><Icon name="session" /></p>
             <h3>Aún no hay campañas</h3>
             <p className="muted">Crea una para empezar a llevar personajes y notas, o importa un respaldo.</p>
             <button className="btn btn-primary" onClick={() => setCreating(true)}>
@@ -81,6 +82,17 @@ export function HomePage() {
         )}
 
         <DataCard onExportAll={() => void exportEverything()} />
+        <p className="home-credits muted small">
+          Íconos de{' '}
+          <a href="https://game-icons.net" target="_blank" rel="noreferrer">
+            game-icons.net
+          </a>{' '}
+          (Lorc, Delapouite y colaboradores), licencia{' '}
+          <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">
+            CC BY 3.0
+          </a>
+          .
+        </p>
       </main>
 
       <CampaignFormDialog
@@ -124,7 +136,7 @@ function CampaignCard({ campaign, onExport, onDelete }: { campaign: Campaign; on
       </Link>
       <div className="campaign-card-actions">
         <button className="btn btn-ghost btn-sm" onClick={onExport} title="Descargar respaldo JSON">
-          ⬇️ Exportar
+          <Icon name="export" /> Exportar
         </button>
         <button className="btn btn-ghost btn-sm btn-danger" onClick={onDelete}>
           Eliminar

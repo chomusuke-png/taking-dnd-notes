@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { db } from '../../db/db';
 import { NOTE_TYPE_INFO, QUEST_STATUS_LABEL, WIKI_TYPES, createNote } from '../../db/notes';
 import type { Note, NoteType } from '../../db/types';
@@ -74,7 +75,7 @@ export function NotesPage({ mode }: { mode: Mode }) {
                 <div className="menu" role="menu">
                   {WIKI_TYPES.map((t) => (
                     <button key={t} role="menuitem" className="menu-item" onClick={() => create(t)}>
-                      {NOTE_TYPE_INFO[t].icon} {NOTE_TYPE_INFO[t].label}
+                      <Icon name={NOTE_TYPE_INFO[t].icon} /> {NOTE_TYPE_INFO[t].label}
                     </button>
                   ))}
                 </div>
@@ -98,7 +99,7 @@ export function NotesPage({ mode }: { mode: Mode }) {
             </button>
             {WIKI_TYPES.map((t) => (
               <button key={t} className={typeFilter === t ? 'chip chip-on' : 'chip'} onClick={() => setTypeFilter(t)}>
-                {NOTE_TYPE_INFO[t].icon} {NOTE_TYPE_INFO[t].plural}
+                <Icon name={NOTE_TYPE_INFO[t].icon} /> {NOTE_TYPE_INFO[t].plural}
               </button>
             ))}
           </div>
@@ -139,7 +140,7 @@ export function NotesPage({ mode }: { mode: Mode }) {
         ) : (
           <div className="placeholder">
             <p className="placeholder-icon" aria-hidden>
-              {mode === 'journal' ? '📖' : '🗺️'}
+              <Icon name={mode === 'journal' ? 'journal' : 'wiki'} />
             </p>
             <h2>{mode === 'journal' ? 'Diario de campaña' : 'Wiki de la campaña'}</h2>
             <p className="muted">
@@ -170,7 +171,7 @@ function NoteListItem({ n }: { n: Note }) {
   return (
     <>
       <span className="notes-item-icon" aria-hidden>
-        {info.icon}
+        <Icon name={info.icon} />
       </span>
       <span className="notes-item-body">
         <span className="notes-item-title">{n.title}</span>

@@ -1,4 +1,5 @@
 import { Fragment, useMemo, useState } from 'react';
+import { Icon } from '../../../components/Icon';
 import { NumberField, TextField } from '../../../components/fields';
 import type { InventoryItem } from '../../../db/types';
 import { newId } from '../../../lib/id';
@@ -75,11 +76,15 @@ export function InventoryTab() {
       <table className="sheet-table inventory-table">
         <thead>
           <tr>
-            <th title="Equipado" aria-label="Equipado">⚔️</th>
+            <th title="Equipado" aria-label="Equipado">
+              <Icon name="encounters" />
+            </th>
             <th>Objeto</th>
             <th className="num">Cant.</th>
             <th className="num">Peso</th>
-            <th title="Sintonizado" aria-label="Sintonizado">✦</th>
+            <th title="Sintonizado" aria-label="Sintonizado">
+              <Icon name="attuned" />
+            </th>
             {edit && <th aria-label="Acciones" />}
           </tr>
         </thead>
@@ -132,7 +137,7 @@ export function InventoryTab() {
                     title="Usar para calcular la CA"
                     onClick={() => update((x) => ({ ...x, armor: armorFromItem(x.armor, srd!)!, inventory: x.inventory.map((y) => (y.id === it.id ? { ...y, equipped: true } : y)) }))}
                   >
-                    🛡️ usar para CA
+                    <Icon name="armorClass" /> usar para CA
                   </button>
                 )}
               </td>

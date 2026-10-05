@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { TextField } from '../../components/fields';
 import { QuickHp } from '../../components/QuickHp';
@@ -134,7 +135,7 @@ export function EncounterView({ encounterId, campaignId }: { encounterId: Id; ca
         {enc.round === 0 || enc.ended ? (
           <>
             <button type="button" className="btn btn-sm" disabled={rows.length === 0} onClick={() => change((e) => rollInitiatives(e, 'missing'))}>
-              🎲 Tirar iniciativa faltante
+              <Icon name="d20" /> Tirar iniciativa faltante
             </button>
             <button type="button" className="btn btn-sm btn-primary" disabled={rows.length === 0} onClick={() => change((e) => startEncounter(rollInitiatives(e, 'missing')))}>
               ▶ {enc.ended ? 'Reanudar' : 'Comenzar combate'}
@@ -172,7 +173,7 @@ export function EncounterView({ encounterId, campaignId }: { encounterId: Id; ca
 
       {enc.ended && defeatedXp.length > 0 && (
         <p className="encounter-xp card">
-          🏆 Monstruos derrotados: {defeatedXp.reduce((a, b) => a + b, 0)} PX en total ·{' '}
+          <Icon name="trophy" /> Monstruos derrotados: {defeatedXp.reduce((a, b) => a + b, 0)} PX en total ·{' '}
           <strong>{xpPerCharacter(defeatedXp, party.length)} PX por personaje</strong> ({party.length} PJ)
         </p>
       )}
@@ -297,13 +298,13 @@ function CombatantRow({ row, active, focused, selected, onSelect, onFocus, onIni
         onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLInputElement).blur()}
       />
       <button type="button" className="combatant-name" onClick={onFocus}>
-        <span aria-hidden>{pc ? '🧙' : cb.ref.type === 'srdMonster' ? '🐉' : '✏️'}</span>
+        <Icon name={pc ? 'characters' : cb.ref.type === 'srdMonster' ? 'monster' : 'custom'} />
         <span className="combatant-name-text">{cb.name}</span>
-        {out && <span className="muted small">{pc ? '💀' : 'derrotado'}</span>}
+        {out && <span className="muted small">{pc ? <Icon name="dead" label="Muerto" /> : 'derrotado'}</span>}
         {pc && hp === 0 && !out && <span className="small dying">a 0 PG</span>}
       </button>
       <span className="combatant-ac" title="Clase de armadura">
-        🛡️ {ac}
+        <Icon name="armorClass" /> {ac}
       </span>
       <span className="combatant-hp">
         <span className="combatant-hp-text">

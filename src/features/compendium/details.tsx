@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Icon } from '../../components/Icon';
 import { getClass } from '../../rules/classes';
 import { abilityMod, formatMod } from '../../rules/derive';
 import {
@@ -197,7 +198,7 @@ export function MonsterStatBlock({ monster: m }: { monster: SrdMonster }) {
                 <div className="stat-rolls">
                   {a.attackBonus !== undefined && (
                     <button type="button" className="roll-btn" onClick={() => dice.check(m.name, `${a.name}: ataque`, a.attackBonus!)}>
-                      🎲 {formatMod(a.attackBonus)}
+                      <Icon name="d20" /> {formatMod(a.attackBonus)}
                     </button>
                   )}
                   {a.damage?.map((d) => {

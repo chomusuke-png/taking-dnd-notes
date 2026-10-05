@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from '../../components/Icon';
 import { SNOOZE_MS, backupReminder } from '../../db/backupReminder';
 import type { Campaign } from '../../db/types';
 import { useBackupActions } from '../campaigns/useBackupActions';
@@ -33,7 +34,7 @@ export function BackupBanner({ campaign }: { campaign: Campaign }) {
   return (
     <div className="backup-banner" role="status">
       <span>
-        💾 {campaign.lastExportedAt ? `Hace ${days} días que no respaldas esta campaña` : 'Esta campaña nunca se ha respaldado'} y tiene
+        <Icon name="backup" /> {campaign.lastExportedAt ? `Hace ${days} días que no respaldas esta campaña` : 'Esta campaña nunca se ha respaldado'} y tiene
         cambios nuevos.
       </span>
       <span className="backup-banner-actions">

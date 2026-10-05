@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { ConfirmDialog } from '../../components/Dialog';
 import { exportCharacter } from '../../db/backup';
 import { deleteCharacter, updateCharacter } from '../../db/characters';
@@ -100,7 +101,7 @@ export function CharacterSheet() {
               onClick={() => setEdit((e) => !e)}
               aria-pressed={edit}
             >
-              {edit ? '✓ Listo' : '✏️ Editar'}
+              {edit ? '✓ Listo' : <><Icon name="edit" /> Editar</>}
             </button>
             <button
               type="button"
@@ -108,7 +109,7 @@ export function CharacterSheet() {
               title="Descargar el personaje como JSON para compartirlo"
               onClick={async () => downloadJson(backupFilename(c.name, 'personaje'), await exportCharacter(c.id))}
             >
-              ⬇️ Exportar
+              <Icon name="export" /> Exportar
             </button>
             {edit && (
               <button type="button" className="btn btn-ghost btn-danger" onClick={() => setConfirmDelete(true)}>

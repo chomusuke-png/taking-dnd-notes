@@ -3,17 +3,18 @@ import { Link, Navigate, useOutletContext, useParams } from 'react-router-dom';
 import { CLASSES } from '../../rules/classes';
 import { useSrd, type SrdItem, type SrdKind, type SrdMonster, type SrdSpell } from '../../srd';
 import { ITEM_CATEGORY_LABEL, MONSTER_TYPE_LABEL, RARITY_LABEL, SCHOOL_LABEL, SPELL_LEVEL_LABEL, formatCr, label } from '../../srd/labels';
+import { Icon, type IconName } from '../../components/Icon';
 import { fold } from '../../lib/text';
 import type { WorkspaceContext } from '../workspace/CampaignLayout';
 import { AddToCharacterDialog } from './AddToCharacterDialog';
 import { ConditionDetail, ItemDetail, MonsterStatBlock, SpellDetail } from './details';
 import './compendium.css';
 
-const KINDS: { kind: SrdKind; label: string; icon: string }[] = [
-  { kind: 'spells', label: 'Conjuros', icon: '✨' },
-  { kind: 'monsters', label: 'Monstruos', icon: '🐉' },
-  { kind: 'items', label: 'Objetos', icon: '🎒' },
-  { kind: 'conditions', label: 'Condiciones', icon: '🌀' },
+const KINDS: { kind: SrdKind; label: string; icon: IconName }[] = [
+  { kind: 'spells', label: 'Conjuros', icon: 'spells' },
+  { kind: 'monsters', label: 'Monstruos', icon: 'monster' },
+  { kind: 'items', label: 'Objetos', icon: 'items' },
+  { kind: 'conditions', label: 'Condiciones', icon: 'conditions' },
 ];
 
 const CR_STEPS = [0, 0.125, 0.25, 0.5, 1, 2, 3, 4, 5, 6, 8, 10, 13, 17, 21, 30];
@@ -125,7 +126,7 @@ function Compendium({ kind, id }: { kind: SrdKind; id?: string }) {
               className={kind === k.kind ? 'seg-item seg-on' : 'seg-item'}
               onClick={() => setLimit(PAGE)}
             >
-              <span aria-hidden>{k.icon}</span> {k.label}
+              <Icon name={k.icon} /> {k.label}
             </Link>
           ))}
         </div>
@@ -245,7 +246,7 @@ function Compendium({ kind, id }: { kind: SrdKind; id?: string }) {
         ) : (
           <div className="placeholder">
             <p className="placeholder-icon" aria-hidden>
-              📚
+              <Icon name="compendium" />
             </p>
             <h2>Compendio SRD 5.1</h2>
             <p className="muted">

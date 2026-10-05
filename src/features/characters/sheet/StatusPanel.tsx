@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from '../../../components/Icon';
 import { ConfirmDialog, Dialog } from '../../../components/Dialog';
 import { NumberField, Pips } from '../../../components/fields';
 import { CONDITIONS, type ArmorConfig, type Character, type HitDie } from '../../../db/types';
@@ -34,7 +35,9 @@ export function StatusPanel() {
           checked={c.inspiration}
           onChange={(e) => update((x) => ({ ...x, inspiration: e.target.checked }))}
         />
-        <span>✨ Inspiración</span>
+        <span>
+          <Icon name="inspiration" /> Inspiración
+        </span>
       </label>
 
       <HpBox />
@@ -176,7 +179,7 @@ function HpBox() {
       if (kind === 'heal') return heal(x, n);
       if (kind === 'temp') return setTempHp(x, n);
       const { character, outcome } = applyDamage(x, n, critical);
-      if (outcome === 'dead') toast(`💀 ${x.name} ha muerto.`, 'error');
+      if (outcome === 'dead') toast(`${x.name} ha muerto.`, 'error');
       else if (outcome === 'down' && x.hp.current > 0) toast(`${x.name} cae inconsciente.`, 'error');
       return character;
     });
@@ -257,7 +260,7 @@ function DeathSaves() {
       const msg = {
         revived: `¡20 natural! ${x.name} recupera 1 PG.`,
         stable: `${x.name} se estabiliza.`,
-        dead: `💀 ${x.name} ha muerto.`,
+        dead: `${x.name} ha muerto.`,
         success: '', fail: '',
       }[outcome];
       if (msg) toast(msg, outcome === 'dead' ? 'error' : 'info');
@@ -279,10 +282,12 @@ function DeathSaves() {
         <Pips total={3} used={c.deathSaves.fail} variant="fail" label="Fallo" onChange={(fail) => setSaves({ fail })} />
       </div>
       {dead ? (
-        <p className="death-msg">💀 Muerto</p>
+        <p className="death-msg">
+          <Icon name="dead" /> Muerto
+        </p>
       ) : (
         <button type="button" className="btn btn-sm" onClick={rollSave}>
-          🎲 Tirar salvación de muerte
+          <Icon name="d20" /> Tirar salvación de muerte
         </button>
       )}
     </div>
@@ -418,10 +423,10 @@ function Rests() {
     <div className="status-section">
       <div className="rest-buttons">
         <button type="button" className="btn" onClick={() => setShortOpen(true)}>
-          ☕ Descanso corto
+          <Icon name="shortRest" /> Descanso corto
         </button>
         <button type="button" className="btn" onClick={() => setLongOpen(true)}>
-          🛏️ Descanso largo
+          <Icon name="longRest" /> Descanso largo
         </button>
       </div>
 
@@ -463,7 +468,7 @@ function Rests() {
                 disabled={hitDiceAvailable(c, d) <= 0 || c.hp.current >= effectiveMaxHp(c)}
                 onClick={() => spend(d)}
               >
-                🎲 Gastar d{d} <span className="muted">({hitDiceAvailable(c, d)} disp.)</span>
+                <Icon name="d20" /> Gastar d{d} <span className="muted">({hitDiceAvailable(c, d)} disp.)</span>
               </button>
             ))}
           </div>

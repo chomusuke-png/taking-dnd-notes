@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { NOTE_TYPE_INFO, notePath } from '../../db/notes';
 import type { Id, Note } from '../../db/types';
 import { plainText } from '../../lib/richText';
@@ -12,7 +13,7 @@ export function BacklinkList({ notes, campaignId }: { notes: Note[] | undefined;
       {notes.map((n) => (
         <li key={n.id}>
           <Link to={`/c/${campaignId}/${notePath(n)}`}>
-            {NOTE_TYPE_INFO[n.type].icon} {n.title}
+            <Icon name={NOTE_TYPE_INFO[n.type].icon} /> {n.title}
           </Link>
           <p className="muted small backlink-excerpt">{plainText(n.content).slice(0, 120)}</p>
         </li>

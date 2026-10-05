@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Icon } from '../../components/Icon';
 import { db } from '../../db/db';
 import { createEncounter } from '../../db/encounters';
 import type { Encounter } from '../../db/types';
@@ -38,7 +39,7 @@ export function EncountersPage() {
             <li key={e.id}>
               <Link to={`/c/${campaign.id}/encuentros/${e.id}`} className={`notes-item${e.id === encounterId ? ' is-active' : ''}`}>
                 <span className="notes-item-icon" aria-hidden>
-                  {e.ended ? '🏁' : e.round > 0 ? '⚔️' : '📋'}
+                  <Icon name={e.ended ? 'finished' : e.round > 0 ? 'encounters' : 'note'} />
                 </span>
                 <span className="notes-item-body">
                   <span className="notes-item-title">{e.name}</span>
@@ -59,7 +60,7 @@ export function EncountersPage() {
         ) : (
           <div className="placeholder">
             <p className="placeholder-icon" aria-hidden>
-              ⚔️
+              <Icon name="encounters" />
             </p>
             <h2>Tracker de iniciativa</h2>
             <p className="muted">
